@@ -15,7 +15,7 @@ class ConfigurationController extends pm_Controller_Action
         $form = new pm_Form_Simple();
 
         $form->addElement('text', 'acronisHost', array(
-            'label' => 'Acronis Host',
+            'label' => pm_Locale::lmsg('acronisHostLabel'),
             'value' => pm_Settings::get('acronisHost'),
             'required' => true,
             'validators' => array(
@@ -37,7 +37,7 @@ class ConfigurationController extends pm_Controller_Action
         )));
 
         $form->addElement('text', 'acronisLogin', array(
-            'label' => 'Login',
+            'label' => pm_Locale::lmsg('acronisLoginLabel'),
             'value' => pm_Settings::get('acronisLogin'),
             'required' => true,
             'validators' => array(
@@ -45,7 +45,7 @@ class ConfigurationController extends pm_Controller_Action
             ),
         ));
         $form->addElement('password', 'acronisPassword', array(
-            'label' => 'Passwort',
+            'label' => pm_Locale::lmsg('acronisPasswordLabel'),
             'value' => '',
             'description' => 'Password: ' . pm_Settings::get('acronisPassword'),
             'validators' => array(
