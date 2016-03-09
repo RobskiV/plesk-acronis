@@ -12,7 +12,6 @@ class ConfigurationController extends pm_Controller_Action
     }
 
     public function formAction() {
-        $this->view->test = "dies ist ein simpler Test";
         $form = new pm_Form_Simple();
 
         $form->addElement('text', 'acronisHost', array(
@@ -31,7 +30,7 @@ class ConfigurationController extends pm_Controller_Action
                             }
                         ),
                         'messages' => array(
-                            Zend_Validate_Callback::INVALID_VALUE => 'Please enter a valid URL',
+                            Zend_Validate_Callback::INVALID_VALUE => pm_Locale::lmsg('invalidUrlAlert'),
                         ),
                     ),
             ),
@@ -54,14 +53,12 @@ class ConfigurationController extends pm_Controller_Action
             ),
         ));
 
-        // Den Submit Button hinzufügen
         $form->addElement('submit', 'submit', array(
             'ignore'   => true,
-            'label'    => 'Konfiguration speichern',
+            'label'    => pm_Locale::lmsg('submitConfigurationButton'),
         ));
 
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
-            // Form proccessing here
             pm_Settings::set('acronisHost', $form->getValue('acronisHost'));
             pm_Settings::set('acronisLogin', $form->getValue('acronisLogin'));
             if ($form->getValue('acronisPassword')) {
@@ -70,7 +67,7 @@ class ConfigurationController extends pm_Controller_Action
 
             //TODO: check configuration via Acronis Interface and treat the result
 
-            $this->_status->addMessage('info', 'Die Konfiguration wurde erfolgreich gespeichert');
+            $this->_status->addMessage('info', pm_Locale::lmsg('configSavedAlert'));
             $this->_helper->json(array('redirect' => pm_Context::getBaseUrl()));
         }
 
