@@ -3,7 +3,7 @@
     <id>acronisbackup</id>
     <name>Acronis Backup Module</name>
     <description>This module enables the user to perform a backup from his webspace to his Acronis account</description>
-    <version>0.1.1</version>
+    <version>0.1</version>
     <release>1</release>
     <vendor>Strato AG</vendor>
     <plesk_min_version>12.5</plesk_min_version>

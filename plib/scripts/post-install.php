@@ -25,7 +25,7 @@ $request = <<<APICALL
          <file>$iconPath</file>
          <internal>true</internal>
          <noframe>true</noframe>
-         <place>navigation</place>
+         <place>client</place>
          <url>$baseUrl</url>
          <text>Acronis Backup</text>
       </properties>

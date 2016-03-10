@@ -19,11 +19,29 @@ class IndexController extends pm_Controller_Action
 
     public function indexAction()
     {
-        $this->_forward('list');
+        $this->_forward('dashboard');
     }
 
-    public function listAction()
+    public function dashboardAction()
     {
-        $this->view->url = $this->_helper->url('index', 'configuration');
+        $this->view->tools = $this->_getToolbar();
+    }
+
+    private  function _getToolbar()
+    {
+        return array(
+            array(
+                'icon' => pm_Context::getBaseUrl() . '/images/ui-icons/clock_32.png',
+                'title' => pm_Locale::lmsg('dashboardNav'),
+                'description' => pm_Locale::lmsg('dashboardDescription'),
+                'link' => pm_Context::getActionUrl('index', 'index'),
+            ),
+            array(
+                'icon' => pm_Context::getBaseUrl() . '/images/ui-icons/gear_32.png',
+                'title' => pm_Locale::lmsg('configurationNav'),
+                'description' => pm_Locale::lmsg('configurationDescription'),
+                'link' => pm_Context::getActionUrl('configuration', 'form'),
+            ),
+        );
     }
 }

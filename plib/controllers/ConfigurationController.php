@@ -4,6 +4,8 @@ class ConfigurationController extends pm_Controller_Action
 {
     public function init() {
         parent::init();
+        $this->view->pageTitle = "Acronis Backup: Settings";
+
     }
 
     public function indexAction()
@@ -12,11 +14,35 @@ class ConfigurationController extends pm_Controller_Action
     }
 
     public function formAction() {
+
+        try {
+            $domain = pm_Session::getCurrentDomain();
+        } catch (pm_Exception $e) {
+            $this->_status->addMessage('error', pm_Locale::lmsg('errorNoClient'));
+            $this->_helper->json(array('redirect' => pm_Context::getBaseUrl()));
+            exit;
+        }
+
+        $settings = pm_Settings::get('settings_'.$domain->getId(), null);
+
+        if ($settings == null) {
+            $settings = array(
+                'host' => null,
+                'username' => null,
+                'password' => null,
+            );
+        } else {
+            $settings = json_decode($settings, true);
+        }
+
+
+        $this->view->domainName = $domain->getName();
+
         $form = new pm_Form_Simple();
 
-        $form->addElement('text', 'acronisHost', array(
-            'label' => pm_Locale::lmsg('acronisHostLabel'),
-            'value' => pm_Settings::get('acronisHost'),
+        $form->addElement('text', 'host', array(
+            'label' => pm_Locale::lmsg('hostLabel'),
+            'value' => $settings['host'],
             'required' => true,
             'validators' => array(
                 array(
@@ -36,33 +62,36 @@ class ConfigurationController extends pm_Controller_Action
             ),
         )));
 
-        $form->addElement('text', 'acronisLogin', array(
-            'label' => pm_Locale::lmsg('acronisLoginLabel'),
-            'value' => pm_Settings::get('acronisLogin'),
+        $form->addElement('text', 'username', array(
+            'label' => pm_Locale::lmsg('usernameLabel'),
+            'value' => $settings['username'],
             'required' => true,
             'validators' => array(
                 array('NotEmpty', true),
             ),
         ));
-        $form->addElement('password', 'acronisPassword', array(
-            'label' => pm_Locale::lmsg('acronisPasswordLabel'),
-            'value' => '',
-            'description' => 'Password: ' . pm_Settings::get('acronisPassword'),
+        $form->addElement('password', 'password', array(
+            'label' => pm_Locale::lmsg('passwordLabel'),
+            'value' => $settings['password'],
             'validators' => array(
                 array('StringLength', true, array(5, 255)),
             ),
         ));
 
         $form->addControlButtons(array(
-            'cancelLink' => pm_Context::getModulesListUrl(),
+            'cancelLink' => pm_Context::getBaseUrl(),
         ));
 
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
-            pm_Settings::set('acronisHost', $form->getValue('acronisHost'));
-            pm_Settings::set('acronisLogin', $form->getValue('acronisLogin'));
-            if ($form->getValue('acronisPassword')) {
-                pm_Settings::set('acronisPassword', $form->getValue('acronisPassword'));
+            $settings['host'] = $form->getValue('host');
+            $settings['username'] = $form->getValue('username');
+            if ($form->getValue('password')) {
+                $settings['password'] = $form->getValue('password');
             }
+
+            $settings = json_encode($settings);
+
+            pm_Settings::set('settings_'.$domain->getId(), $settings);
 
             //TODO: check configuration via Acronis Interface and treat the result
 
