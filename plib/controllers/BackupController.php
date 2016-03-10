@@ -1,15 +1,13 @@
 <?php
 
 /**
- * Diese Datei ist Bestandteil des Strato Name Bundle
+ * Class BackupController
  *
- * Created by Vincent Fahrenholz <fahrenholz@strato-rz.de>
- * © Strato AG
+ * Controller for all backup-actions
  *
- * Date: 08.03.16
- * Time: 14:51
- *
- * KurzInfo zur Datei
+ * @category Controller
+ * @author   Vincent Fahrenholz <fahrenholz@strato.de>
+ * @version  Release: 1.0.0
  */
 class BackupController extends pm_Controller_Action
 {

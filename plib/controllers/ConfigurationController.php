@@ -53,9 +53,8 @@ class ConfigurationController extends pm_Controller_Action
             ),
         ));
 
-        $form->addElement('submit', 'submit', array(
-            'ignore'   => true,
-            'label'    => pm_Locale::lmsg('submitConfigurationButton'),
+        $form->addControlButtons(array(
+            'cancelLink' => pm_Context::getModulesListUrl(),
         ));
 
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
