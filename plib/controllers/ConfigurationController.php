@@ -14,17 +14,38 @@
 
 class ConfigurationController extends pm_Controller_Action
 {
+    /**
+     * init
+     *
+     * Description
+     *
+     *
+     */
     public function init() {
         parent::init();
         $this->view->pageTitle = "Acronis Backup: Settings";
 
     }
 
+    /**
+     * indexAction
+     *
+     * Description
+     *
+     *
+     */
     public function indexAction()
     {
         $this->_forward('form');
     }
 
+    /**
+     * formAction
+     *
+     * Description
+     *
+     *
+     */
     public function formAction() {
 
         try {

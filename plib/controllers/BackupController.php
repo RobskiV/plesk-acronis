@@ -23,10 +23,24 @@
  */
 class BackupController extends pm_Controller_Action
 {
+    /**
+     * init
+     *
+     * Description
+     *
+     *
+     */
     public function init() {
         parent::init();
     }
 
+    /**
+     * indexAction
+     *
+     * Description
+     *
+     *
+     */
     public function indexAction()
     {
         // Default action will be formAction

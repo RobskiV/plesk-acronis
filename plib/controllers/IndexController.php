@@ -23,22 +23,51 @@
  */
 class IndexController extends pm_Controller_Action
 {
+    /**
+     * init
+     *
+     * Description
+     *
+     *
+     */
     public function init() {
         parent::init();
 
         $this->view->pageTitle = 'Acronis Backup Extension';
     }
 
+    /**
+     * indexAction
+     *
+     * Description
+     *
+     *
+     */
     public function indexAction()
     {
         $this->_forward('dashboard');
     }
 
+    /**
+     * dashboardAction
+     *
+     * Description
+     *
+     *
+     */
     public function dashboardAction()
     {
         $this->view->tools = $this->_getToolbar();
     }
 
+    /**
+     * _getToolbar
+     *
+     * Description
+     *
+     *
+     * @return array
+     */
     private  function _getToolbar()
     {
         return array(
