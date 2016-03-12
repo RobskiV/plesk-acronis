@@ -61,6 +61,45 @@ class IndexController extends pm_Controller_Action
     public function dashboardAction()
     {
         $this->view->tools = $this->_getToolbar();
+        $this->view->tools = $this->_getInfoPane();
+        $this->view->tools = $this->_getSchedulerPane();
+        $this->view->tools = $this->_getHistoryPane();
+    }
+
+    /**
+     * _getInfoPane
+     *
+     * Description
+     *
+     *
+     */
+    private function _getInfoPane()
+    {
+
+    }
+
+    /**
+     * _getSchedulerPane
+     *
+     * Description
+     *
+     *
+     */
+    private function _getSchedulerPane()
+    {
+
+    }
+
+    /**
+     * _getHistoryPane
+     *
+     * Description
+     *
+     *
+     */
+    private function _getHistoryPane()
+    {
+
     }
 
     /**
