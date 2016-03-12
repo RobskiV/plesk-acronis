@@ -12,6 +12,7 @@
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */
 
+
 class ConfigurationController extends pm_Controller_Action
 {
     /**
@@ -21,7 +22,8 @@ class ConfigurationController extends pm_Controller_Action
      *
      *
      */
-    public function init() {
+    public function init()
+    {
         parent::init();
         $this->view->pageTitle = "Acronis Backup: Settings";
 
@@ -31,8 +33,6 @@ class ConfigurationController extends pm_Controller_Action
      * indexAction
      *
      * Description
-     *
-     *
      */
     public function indexAction()
     {
@@ -46,7 +46,8 @@ class ConfigurationController extends pm_Controller_Action
      *
      *
      */
-    public function formAction() {
+    public function formAction()
+    {
 
         try {
             $domain = pm_Session::getCurrentDomain();

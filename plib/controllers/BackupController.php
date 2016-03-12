@@ -27,10 +27,9 @@ class BackupController extends pm_Controller_Action
      * init
      *
      * Description
-     *
-     *
      */
-    public function init() {
+    public function init()
+    {
         parent::init();
     }
 

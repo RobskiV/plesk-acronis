@@ -51,7 +51,10 @@ class IndexController extends pm_Controller_Action
     /**
      * dashboardAction
      *
-     * Description
+     * Description: dashboardAction is called for the "Overview" screen.
+     * It includes toolbar, general info about Acronis config,
+     * scheduled backups and a history from which user can
+     * initiate reproducing a backup.
      *
      *
      */
