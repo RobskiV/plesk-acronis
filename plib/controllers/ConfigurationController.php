@@ -112,7 +112,7 @@ class ConfigurationController extends pm_Controller_Action
         ));
 
         $form->addControlButtons(array(
-            'cancelLink' => pm_Context::getBaseUrl(),
+            'cancelLink' => pm_Context::getActionUrl('admin'),
         ));
 
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
