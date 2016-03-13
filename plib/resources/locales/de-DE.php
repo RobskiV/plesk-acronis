@@ -24,4 +24,8 @@ $messages = array(
     'dashboardDescription' => 'Überblick über Ihre Konfiguration',
     'configurationNav' => 'Einstellungen',
     'configurationDescription' => 'Stellen sie die Verbindung zu Ihrem Acronis-Paket her',
+    'adminToolsButtonDescription' => 'Acronis Backup Einstellungen prüfen',
+    'adminToolsButtonTitle' => 'Acronis Backup',
+    'domainPropertiesButtonTitle' => 'Acronis Backup',
+    'domainPropertiesButtonDescription' => 'Seite aus dem Backup wiederherstellen'
 );
