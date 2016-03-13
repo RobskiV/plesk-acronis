@@ -45,7 +45,7 @@ class ConfigurationController extends pm_Controller_Action
      *
      *
      */
-    public function formAction()
+    public function adminformAction()
     {
 
         try {
