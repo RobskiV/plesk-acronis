@@ -13,3 +13,7 @@
  */
 
 
+if (!file_exists('/usr/local/psa/var/modules/acronis-backup')) {
+    mkdir('/usr/local/psa/var/modules/acronis-backup', 0777, true);
+}
+chown('/usr/local/psa/var/modules/acronis-backup', 'psaadm');
