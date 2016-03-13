@@ -13,7 +13,7 @@
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */
 
-class AdminController
+class AdminController extends pm_Controller_Action
 {
     /**
      * indexAction
