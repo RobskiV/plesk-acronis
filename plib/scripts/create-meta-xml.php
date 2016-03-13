@@ -22,7 +22,7 @@ $subscriptionDbs = Modules_AcronisBackup_databases_DatabaseHelper::getDatabases(
 $metadataFile = fopen("/usr/local/psa/var/modules/acronis-backup/metadata.xml", "w");
 fwrite($metadataFile, "<metadata>
   <extension>
-    <name>acronis-backup></name>
+    <name>acronis-backup</name>
     <version>1.0</version>
   </extension>
   <pleskVersion>$version</pleskVersion>
