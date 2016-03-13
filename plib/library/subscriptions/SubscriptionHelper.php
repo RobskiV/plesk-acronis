@@ -13,7 +13,7 @@
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */
 
-class Modules_AcronisBackup_Subscriptions_SubscriptionHelper
+class Modules_AcronisBackup_subscriptions_SubscriptionHelper
 {
 
     private static $pleskVersion;
