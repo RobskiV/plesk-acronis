@@ -32,6 +32,7 @@ class AdminController extends pm_Controller_Action
      */
     public function webspacelistAction()
     {
-
+        $this->view->subscriptions = Modules_AcronisBackup_Subscriptions_SubscriptionHelper::getSubscriptions();
+        $this->view->version = Modules_AcronisBackup_Subscriptions_SubscriptionHelper::getPleskVersion();
     }
 }
