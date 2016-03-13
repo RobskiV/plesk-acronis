@@ -35,10 +35,10 @@ class Modules_AcronisBackup_CustomButtons extends pm_Hook_CustomButtons
         ]];
         $domain = pm_Session::getCurrentDomain();
         $client = pm_Session::getClient();
-
+        $authorizationMode = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getAuthorizationMode();
         $enabledSubscriptions = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getEnabledSubscriptions();
 
-        if ($client->isAdmin() || (isset($enabledSubscriptions[$domain->getName()]) && $enabledSubscriptions[$domain->getName()])) {
+        if ($client->isAdmin() || $authorizationMode == 'simple' || (isset($enabledSubscriptions[$domain->getName()]) && $enabledSubscriptions[$domain->getName()])) {
             $customButtons[] = [
                 'place' => self::PLACE_DOMAIN_PROPERTIES,
                 'title' => pm_Locale::lmsg('domainPropertiesButtonTitle'),

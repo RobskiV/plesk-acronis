@@ -15,6 +15,17 @@ function toggleRestoreSettings(event, scope) {
             $$('.search-field form').first().submit();
         }
     });
+}
 
-
+function toggleAuthorizationMode(scope)
+{
+    var val = scope.options[scope.selectedIndex].value;
+    var url = scope.getAttribute('data-rel');
+    new Ajax.Request(url, {
+        method: 'post',
+        parameters: {value: val},
+        onSuccess: function(transport) {
+            location.reload();
+        }
+    });
 }

@@ -33,10 +33,13 @@ class AdminController extends pm_Controller_Action
     public function webspacelistAction()
     {
         $this->view->pageTitle = pm_Locale::lmsg('adminViewSubscriptionTitle');
+        $this->view->authorizationMode = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getAuthorizationMode();
         $this->view->toolbar = $this->_getToolbar();
-        $list = $this->_getSubscriptionList();
-        // List object for pm_View_Helper_RenderList
-        $this->view->list = $list;
+        if ($this->view->authorizationMode == 'extended') {
+            $list = $this->_getSubscriptionList();
+            // List object for pm_View_Helper_RenderList
+            $this->view->list = $list;
+        }
     }
 
 
@@ -50,14 +53,26 @@ class AdminController extends pm_Controller_Action
         $enabledSubscriptions[$id] = $newStatus;
         Modules_AcronisBackup_subscriptions_SubscriptionHelper::setEnabledSubscriptions($enabledSubscriptions);
 
-        $this->_helper->json(array('newStatus'=>$newStatus, 'enabledSubscriptions' => $enabledSubscriptions));
+        $this->_helper->json(array('newStatus'=>$newStatus));
+    }
+
+    public function toggleauthorizationmodeAction()
+    {
+        $value = $this->_request->getParam('value');
+        Modules_AcronisBackup_subscriptions_SubscriptionHelper::setAuthorizationMode($value);
+
+        $this->_helper->json(array("value"=>$value));
     }
 
     public function webspacelistDataAction()
     {
-        $list = $this->_getSubscriptionList();
-        // List object for pm_View_Helper_RenderList
-        $this->_helper->json($list->fetchData());
+        $this->view->authorizationMode = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getAuthorizationMode();
+
+        if ($this->view->authorizationMode == 'extended') {
+            $list = $this->_getSubscriptionList();
+            // List object for pm_View_Helper_RenderList
+            $this->_helper->json($list->fetchData());
+        }
     }
 
     private function _getSubscriptionList()

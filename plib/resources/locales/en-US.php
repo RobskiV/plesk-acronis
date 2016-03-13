@@ -37,5 +37,8 @@ $messages = array(
     'restoreDisabled' => 'Disabled',
     'adminViewSubscriptionTitle' => 'Acronis Backup Management: Subscription authorization',
     'adminViewConfigurationTitle' => 'Acronis Connection Settings',
-    'adminViewConfigurationDesc' => 'Settings used to connect your server to your acronis solution'
+    'adminViewConfigurationDesc' => 'Settings used to connect your server to your acronis solution',
+    'simpleAuthorizationEnabled' => 'Enable all subscriptions',
+    'simpleAuthorizationDisabled' => 'Decide per subscription',
+    'simpleAuthorizationModeLabel' => 'Authorization Mode:',
 );

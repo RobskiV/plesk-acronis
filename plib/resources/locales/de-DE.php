@@ -36,5 +36,8 @@ $messages = array(
     'restoreDisabled' => 'Nicht erlaubt',
     'adminViewSubscriptionTitle' => 'Acronis Backup Management: Abonnementfreischaltung',
     'adminViewConfigurationTitle' => 'Acronis Verbindungseinstellungen',
-    'adminViewConfigurationDesc' => 'Einstellungen, die für die erfolgreiche Verbindung zu Ihrem Acronis-Paket wichtig sind'
+    'adminViewConfigurationDesc' => 'Einstellungen, die für die erfolgreiche Verbindung zu Ihrem Acronis-Paket wichtig sind',
+    'simpleAuthorizationEnabled' => 'Alle Abonnements freischalten',
+    'simpleAuthorizationDisabled' => 'Per Abonnement entscheiden',
+    'simpleAuthorizationModeLabel' => 'Freischaltungsmodus: ',
 );

@@ -87,4 +87,15 @@ class Modules_AcronisBackup_subscriptions_SubscriptionHelper
         $enabledSubscriptions = json_encode($enabledSubscriptions);
         pm_Settings::set('enabledSubscriptions', $enabledSubscriptions);
     }
+
+    public static function getAuthorizationMode()
+    {
+        return pm_Settings::get('authorizationMode', 'extended');
+    }
+
+    public static function setAuthorizationMode($mode)
+    {
+        $authorizationMode = ($mode == 'extended' | $mode == 'simple') ? $mode : 'extended';
+        pm_Settings::set('authorizationMode', $authorizationMode);
+    }
 }
