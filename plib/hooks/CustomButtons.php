@@ -26,7 +26,7 @@ class Modules_AcronisBackup_CustomButtons extends pm_Hook_CustomButtons
 {
     public function getButtons()
     {
-        return [[
+        $customButtons=[[
             'place' => self::PLACE_ADMIN_TOOLS_AND_SETTINGS,
             'title' => pm_Locale::lmsg('adminToolsButtonTitle'),
             'description' => pm_Locale::lmsg('adminToolsButtonDescription'),
@@ -37,7 +37,9 @@ class Modules_AcronisBackup_CustomButtons extends pm_Hook_CustomButtons
             'title' => pm_Locale::lmsg('domainPropertiesButtonTitle'),
             'description' => pm_Locale::lmsg('domainPropertiesButtonDescription'),
             'icon' => pm_Context::getBaseUrl() . 'images/icon_64.png',
-            'link' => pm_Context::getBaseUrl() . 'index.php/index/index',
+            'link' => pm_Context::getBaseUrl() . 'index.php/customer/index',
         ]];
+
+        return $customButtons;
     }
 }
