@@ -1,4 +1,2 @@
-<p>Version: <?php echo $this->version?></p>
-<p>Subscriptions:<br/>
-    <pre><?php var_dump($this->subscriptions);?></pre>
-</p>
+
+<?php echo $this->renderList($this->list) ?>

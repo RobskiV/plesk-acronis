@@ -32,7 +32,63 @@ class AdminController extends pm_Controller_Action
      */
     public function webspacelistAction()
     {
-        $this->view->subscriptions = Modules_AcronisBackup_Subscriptions_SubscriptionHelper::getSubscriptions();
-        $this->view->version = Modules_AcronisBackup_Subscriptions_SubscriptionHelper::getPleskVersion();
+        $list = $this->_getSubscriptionList();
+        // List object for pm_View_Helper_RenderList
+        $this->view->list = $list;
+    }
+
+    public function webspacelistDataAction()
+    {
+        $list = $this->_getSubscriptionList();
+        // List object for pm_View_Helper_RenderList
+        $this->_helper->json($list->fetchData());
+    }
+
+    private function _getSubscriptionList()
+    {
+        $enabledSubscriptions = $this->_getEnabledSubscriptions();
+        $subscriptions = Modules_AcronisBackup_Subscriptions_SubscriptionHelper::getSubscriptions();
+        $iconPath = pm_Context::getBaseUrl() . 'images/icon_64.png';
+        $data = [];
+        foreach ($subscriptions as $subscription) {
+            $data[] = array(
+                'column-1' => $subscription,
+                'column-2' => isset($subscription, $enabledSubscriptions),
+            );
+        }
+
+        $list = new pm_View_List_Simple($this->view, $this->_request);
+
+        $list->setData($data);
+        $list->setColumns(array(
+            "column-1" => array(
+                "title" => pm_Locale::lmsg('adminListSubscriptionTitle'),
+                "noEscape" => true,
+                "searchable" => true,
+                "sortable" => true,
+            ),
+            "column-2" => array(
+                "title" => pm_Locale::lmsg('adminListRestoreTitle'),
+                "noEscape" => true,
+                "searchable" => false,
+                "sortable" => false,
+            )
+        ));
+
+        $list->setDataUrl(array('action' => 'webspacelist-data'));
+
+        return $list;
+    }
+
+    private function _getEnabledSubscriptions()
+    {
+        $enabledSubscriptions = pm_Settings::get('enabledSubscriptions');
+        if ($enabledSubscriptions == null) {
+            $enabledSubscriptions = [];
+        } else {
+            $enabledSubscriptions = json_decode($enabledSubscriptions);
+        }
+
+        return $enabledSubscriptions;
     }
 }
