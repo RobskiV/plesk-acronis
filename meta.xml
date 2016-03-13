@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module>
-    <id>acronisbackup</id>
+    <id>acronis-backup</id>
     <name>Acronis Backup Module</name>
     <description>This module enables the user to perform a backup from his webspace to his Acronis account</description>
     <version>0.1</version>

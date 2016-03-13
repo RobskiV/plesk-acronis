@@ -37,7 +37,7 @@ class Modules_AcronisBackup_CustomButtons extends pm_Hook_CustomButtons
             'title' => pm_Locale::lmsg('domainPropertiesButtonTitle'),
             'description' => pm_Locale::lmsg('domainPropertiesButtonDescription'),
             'icon' => pm_Context::getBaseUrl() . 'images/icon_64.png',
-            'link' => pm_Context::getBaseUrl() . 'index.php/index',
+            'link' => pm_Context::getBaseUrl() . 'index.php/index/index',
         ]];
     }
 }
