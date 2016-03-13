@@ -12,11 +12,12 @@
  *
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */
-require_once('../library/subscriptions/SubscriptionHelper.php');
+require_once(__DIR__ . '/../library/subscriptions/SubscriptionHelper.php');
+require_once(__DIR__ . '/../library/databases/DatabaseHelper.php');
 
 $client = pm_Client::getByLogin("admin");
-$version = Modules_AcronisBackup_Subscriptions_SubscriptionHelper::getPleskVersion();
-$subscriptions = Modules_AcronisBackup_Subscriptions_SubscriptionHelper::getSubscriptions($client);
+$version = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getPleskVersion();
+$subscriptionDbs = Modules_AcronisBackup_databases_DatabaseHelper::getDatabases($client);
 
 $metadataFile = fopen("/usr/local/psa/var/modules/acronis-backup/metadata.xml", "w");
 fwrite($metadataFile, "<metadata>
@@ -26,8 +27,22 @@ fwrite($metadataFile, "<metadata>
   </extension>
   <pleskVersion>$version</pleskVersion>
   <subscriptions>");
-foreach ($subscriptions as $subscription){
-    fwrite($metadataFile, "<subscription>" . $subscription . "</subscription>");
+foreach ($subscriptionDbs as $key => $subscriptionDb){
+    fwrite($metadataFile, "
+    <subscription>
+      <name>" . $key . "</name>
+      <databases>");
+    foreach($subscriptionDb as $instance) {
+        if (isset($instance)) {
+            fwrite($metadataFile, "
+        <database>" . $instance . "</database>");
+        }
+    }
+    fwrite($metadataFile, "
+      </databases>
+    </subscription>");
 }
-fwrite($metadataFile,"</subscriptions></metadata>");
+fwrite($metadataFile,"
+  </subscriptions>
+</metadata>");
 fclose($metadataFile);
