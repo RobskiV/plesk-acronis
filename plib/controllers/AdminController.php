@@ -22,7 +22,7 @@ class AdminController extends pm_Controller_Action
      */
     public function indexAction()
     {
-        $this->_forward('webspaceList');
+        $this->_forward('webspacelist');
     }
 
     /**
@@ -30,7 +30,7 @@ class AdminController extends pm_Controller_Action
      *
      * Action to display a list of webspaces and to enable these webspaces to perform a restore of their webspace
      */
-    public function webspaceListAction()
+    public function webspacelistAction()
     {
 
     }
