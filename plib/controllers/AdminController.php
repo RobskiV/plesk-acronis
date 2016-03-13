@@ -46,9 +46,9 @@ class AdminController extends pm_Controller_Action
         $oldStatus = (bool) $this->_request->getParam('oldStatus');
         $newStatus = !$oldStatus;
 
-        $enabledSubscriptions = $this->_getEnabledSubscriptions();
+        $enabledSubscriptions = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getEnabledSubscriptions();
         $enabledSubscriptions[$id] = $newStatus;
-        $this->_setEnabledSubscriptions($enabledSubscriptions);
+        Modules_AcronisBackup_subscriptions_SubscriptionHelper::setEnabledSubscriptions($enabledSubscriptions);
 
         $this->_helper->json(array('newStatus'=>$newStatus, 'enabledSubscriptions' => $enabledSubscriptions));
     }
@@ -89,7 +89,7 @@ class AdminController extends pm_Controller_Action
 
     private function _getSubscriptionData()
     {
-        $enabledSubscriptions = $this->_getEnabledSubscriptions();
+        $enabledSubscriptions = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getEnabledSubscriptions();
         $subscriptions = Modules_AcronisBackup_Subscriptions_SubscriptionHelper::getSubscriptions();
         $iconPath = pm_Context::getBaseUrl() . 'images/icon_64.png';
         $data = [];
@@ -107,24 +107,6 @@ class AdminController extends pm_Controller_Action
         }
 
         return $data;
-    }
-
-    private function _getEnabledSubscriptions()
-    {
-        $enabledSubscriptions = pm_Settings::get('enabledSubscriptions');
-        if ($enabledSubscriptions == null) {
-            $enabledSubscriptions = [];
-        } else {
-            $enabledSubscriptions = json_decode($enabledSubscriptions, true);
-        }
-
-        return $enabledSubscriptions;
-    }
-
-    private function _setEnabledSubscriptions($enabledSubscriptions)
-    {
-        $enabledSubscriptions = json_encode($enabledSubscriptions);
-        pm_Settings::set('enabledSubscriptions', $enabledSubscriptions);
     }
 
     private function _getToolbar()

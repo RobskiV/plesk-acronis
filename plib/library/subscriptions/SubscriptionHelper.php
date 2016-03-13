@@ -69,4 +69,22 @@ class Modules_AcronisBackup_subscriptions_SubscriptionHelper
         }
         return $subscriptions;
     }
+
+    public static function getEnabledSubscriptions()
+    {
+        $enabledSubscriptions = pm_Settings::get('enabledSubscriptions');
+        if ($enabledSubscriptions == null) {
+            $enabledSubscriptions = [];
+        } else {
+            $enabledSubscriptions = json_decode($enabledSubscriptions, true);
+        }
+
+        return $enabledSubscriptions;
+    }
+
+    public static function setEnabledSubscriptions($enabledSubscriptions)
+    {
+        $enabledSubscriptions = json_encode($enabledSubscriptions);
+        pm_Settings::set('enabledSubscriptions', $enabledSubscriptions);
+    }
 }

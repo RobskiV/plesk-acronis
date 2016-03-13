@@ -32,13 +32,21 @@ class Modules_AcronisBackup_CustomButtons extends pm_Hook_CustomButtons
             'description' => pm_Locale::lmsg('adminToolsButtonDescription'),
             'icon' => pm_Context::getBaseUrl() . 'images/icon_64.png',
             'link' => pm_Context::getBaseUrl() . 'index.php/admin/webspacelist',
-        ],[
-            'place' => self::PLACE_DOMAIN_PROPERTIES,
-            'title' => pm_Locale::lmsg('domainPropertiesButtonTitle'),
-            'description' => pm_Locale::lmsg('domainPropertiesButtonDescription'),
-            'icon' => pm_Context::getBaseUrl() . 'images/icon_64.png',
-            'link' => pm_Context::getBaseUrl() . 'index.php/customer/index',
         ]];
+        $domain = pm_Session::getCurrentDomain();
+        $client = pm_Session::getClient();
+
+        $enabledSubscriptions = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getEnabledSubscriptions();
+
+        if ($client->isAdmin() || (isset($enabledSubscriptions[$domain->getName()]) && $enabledSubscriptions[$domain->getName()])) {
+            $customButtons[] = [
+                'place' => self::PLACE_DOMAIN_PROPERTIES,
+                'title' => pm_Locale::lmsg('domainPropertiesButtonTitle'),
+                'description' => pm_Locale::lmsg('domainPropertiesButtonDescription'),
+                'icon' => pm_Context::getBaseUrl() . 'images/icon_64.png',
+                'link' => pm_Context::getBaseUrl() . 'index.php/customer/index',
+            ];
+        }
 
         return $customButtons;
     }
