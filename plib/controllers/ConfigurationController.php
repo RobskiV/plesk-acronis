@@ -25,8 +25,7 @@ class ConfigurationController extends pm_Controller_Action
     public function init()
     {
         parent::init();
-        $this->view->pageTitle = "Acronis Backup: Settings";
-
+        $this->view->pageTitle = pm_Locale::lmsg('configurationPageTitle');
     }
 
     /**
@@ -123,11 +122,18 @@ class ConfigurationController extends pm_Controller_Action
                 $settings['password'] = $form->getValue('password');
             }
 
+            // use credentials to simulate a connection and verify them
+            try {
+                $request = new Modules_AcronisBackup_webapi_Request($settings['host'], $settings['username'], $settings['password']);
+                $request->request('GET', '/api/ams/session');
+            } catch(RuntimeException $e) {
+                $this->_status->addMessage('error', pm_Locale::lmsg('configFailedAlert'));
+                $this->_helper->json(array('redirect' => pm_Context::getBaseUrl()));
+            }
+
             $settings = json_encode($settings);
 
-            pm_Settings::set('settings_'.$domain->getId(), $settings);
-
-            //TODO: check configuration via Acronis Interface and treat the result
+            pm_Settings::set('settings', $settings);
 
             $this->_status->addMessage('info', pm_Locale::lmsg('configSavedAlert'));
             $this->_helper->json(array('redirect' => pm_Context::getBaseUrl()));
