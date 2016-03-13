@@ -57,7 +57,7 @@ class ConfigurationController extends pm_Controller_Action
             exit;
         }
 
-        $settings = pm_Settings::get('settings_'.$domain->getId(), null);
+        $settings = pm_Settings::get('settings', null);
 
         if ($settings == null) {
             $settings = array(

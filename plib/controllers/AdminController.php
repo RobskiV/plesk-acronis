@@ -32,9 +32,25 @@ class AdminController extends pm_Controller_Action
      */
     public function webspacelistAction()
     {
+        $this->view->pageTitle = pm_Locale::lmsg('adminViewSubscriptionTitle');
+        $this->view->toolbar = $this->_getToolbar();
         $list = $this->_getSubscriptionList();
         // List object for pm_View_Helper_RenderList
         $this->view->list = $list;
+    }
+
+
+    public function togglesubscriptionAction()
+    {
+        $id = $this->_request->getParam('id');
+        $oldStatus = (bool) $this->_request->getParam('oldStatus');
+        $newStatus = !$oldStatus;
+
+        $enabledSubscriptions = $this->_getEnabledSubscriptions();
+        $enabledSubscriptions[$id] = $newStatus;
+        $this->_setEnabledSubscriptions($enabledSubscriptions);
+
+        $this->_helper->json(array('newStatus'=>$newStatus, 'enabledSubscriptions' => $enabledSubscriptions));
     }
 
     public function webspacelistDataAction()
@@ -46,16 +62,7 @@ class AdminController extends pm_Controller_Action
 
     private function _getSubscriptionList()
     {
-        $enabledSubscriptions = $this->_getEnabledSubscriptions();
-        $subscriptions = Modules_AcronisBackup_Subscriptions_SubscriptionHelper::getSubscriptions();
-        $iconPath = pm_Context::getBaseUrl() . 'images/icon_64.png';
-        $data = [];
-        foreach ($subscriptions as $subscription) {
-            $data[] = array(
-                'column-1' => $subscription,
-                'column-2' => isset($subscription, $enabledSubscriptions),
-            );
-        }
+        $data = $this->_getSubscriptionData();
 
         $list = new pm_View_List_Simple($this->view, $this->_request);
 
@@ -63,7 +70,6 @@ class AdminController extends pm_Controller_Action
         $list->setColumns(array(
             "column-1" => array(
                 "title" => pm_Locale::lmsg('adminListSubscriptionTitle'),
-                "noEscape" => true,
                 "searchable" => true,
                 "sortable" => true,
             ),
@@ -72,6 +78,7 @@ class AdminController extends pm_Controller_Action
                 "noEscape" => true,
                 "searchable" => false,
                 "sortable" => false,
+                "noWrap" => true,
             )
         ));
 
@@ -80,15 +87,55 @@ class AdminController extends pm_Controller_Action
         return $list;
     }
 
+    private function _getSubscriptionData()
+    {
+        $enabledSubscriptions = $this->_getEnabledSubscriptions();
+        $subscriptions = Modules_AcronisBackup_Subscriptions_SubscriptionHelper::getSubscriptions();
+        $iconPath = pm_Context::getBaseUrl() . 'images/icon_64.png';
+        $data = [];
+        foreach ($subscriptions as $subscription) {
+            if (isset($enabledSubscriptions[$subscription]) && $enabledSubscriptions[$subscription]) {
+                $column2 = '<a class="toggle-restore-link" onclick="toggleRestoreSettings(event, this);" href="'.pm_Context::getActionUrl('admin', 'togglesubscription').'" data-id="'.$subscription.'" data-status="1"><i class="icon"><img src="'.pm_Context::getBaseUrl().'/images/ui-icons/on.png'.'"/></i></a> '.pm_Locale::lmsg('restoreEnabled');
+            } else {
+                $column2 = '<a class="toggle-restore-link" onclick="toggleRestoreSettings(event, this);" href="'.pm_Context::getActionUrl('admin', 'togglesubscription').'" data-id="'.$subscription.'" data-status="0"><i class="icon"><img src="'.pm_Context::getBaseUrl().'/images/ui-icons/off.png'.'"/></i></a> '.pm_Locale::lmsg('restoreDisabled');
+            }
+
+            $data[] = array(
+                'column-1' => $subscription,
+                'column-2' => $column2,
+            );
+        }
+
+        return $data;
+    }
+
     private function _getEnabledSubscriptions()
     {
         $enabledSubscriptions = pm_Settings::get('enabledSubscriptions');
         if ($enabledSubscriptions == null) {
             $enabledSubscriptions = [];
         } else {
-            $enabledSubscriptions = json_decode($enabledSubscriptions);
+            $enabledSubscriptions = json_decode($enabledSubscriptions, true);
         }
 
         return $enabledSubscriptions;
+    }
+
+    private function _setEnabledSubscriptions($enabledSubscriptions)
+    {
+        $enabledSubscriptions = json_encode($enabledSubscriptions);
+        pm_Settings::set('enabledSubscriptions', $enabledSubscriptions);
+    }
+
+    private function _getToolbar()
+    {
+        return array(
+            array(
+                'icon' => pm_Context::getBaseUrl() . '/images/ui-icons/gear_32.png',
+                'title' => pm_Locale::lmsg('adminViewConfigurationTitle'),
+                'description' => pm_Locale::lmsg('adminViewConfigurationDesc'),
+                'link' => pm_Context::getActionUrl('configuration', 'form'),
+            ),
+        );
     }
 }

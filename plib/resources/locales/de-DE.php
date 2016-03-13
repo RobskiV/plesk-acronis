@@ -27,5 +27,12 @@ $messages = array(
     'adminToolsButtonDescription' => 'Acronis Backup Einstellungen prüfen',
     'adminToolsButtonTitle' => 'Acronis Backup',
     'domainPropertiesButtonTitle' => 'Acronis Backup',
-    'domainPropertiesButtonDescription' => 'Seite aus dem Backup wiederherstellen'
+    'domainPropertiesButtonDescription' => 'Seite aus dem Backup wiederherstellen',
+    'adminListSubscriptionTitle' => 'Abonnement-Name',
+    'adminListRestoreTitle' => 'Restore',
+    'restoreEnabled' => 'Erlaubt',
+    'restoreDisabled' => 'Nicht erlaubt',
+    'adminViewSubscriptionTitle' => 'Acronis Backup Management: Abonnementfreischaltung',
+    'adminViewConfigurationTitle' => 'Acronis Verbindungseinstellungen',
+    'adminViewConfigurationDesc' => 'Einstellungen, die für die erfolgreiche Verbindung zu Ihrem Acronis-Paket wichtig sind'
 );

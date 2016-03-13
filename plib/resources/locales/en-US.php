@@ -28,5 +28,12 @@ $messages = array(
     'adminToolsButtonDescription' => 'Review Acronis Backup settings',
     'adminToolsButtonTitle' => 'Acronis Backup',
     'domainPropertiesButtonTitle' => 'Acronis Backup',
-    'domainPropertiesButtonDescription' => 'Restore site from backup'
+    'domainPropertiesButtonDescription' => 'Restore site from backup',
+    'adminListSubscriptionTitle' => 'Subscription name',
+    'adminListRestoreTitle' => 'Restore',
+    'restoreEnabled' => 'Enabled',
+    'restoreDisabled' => 'Disabled',
+    'adminViewSubscriptionTitle' => 'Acronis Backup Management: Subscription authorization',
+    'adminViewConfigurationTitle' => 'Acronis Connection Settings',
+    'adminViewConfigurationDesc' => 'Settings used to connect your server to your acronis solution'
 );
