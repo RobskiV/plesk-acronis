@@ -42,11 +42,13 @@ class Modules_AcronisBackup_Subscriptions_SubscriptionHelper
      *
      * @return array\
      */
-    public static function getSubscriptions()
+    public static function getSubscriptions($client = null)
     {
-        $login = pm_Session::getClient()->getProperty('login');
-        if ('admin' != $login) {
-            return [pm_Session::getCurrentDomain()->getName()];
+        if ($client === null) {
+            $login = pm_Session::getClient()->getProperty('login');
+            if ('admin' != $login) {
+                return [pm_Session::getCurrentDomain()->getName()];
+            }
         }
         $request = "<webspace>
             <get>
