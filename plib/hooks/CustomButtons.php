@@ -22,7 +22,22 @@
  * @author   Vincent Fahrenholz <fahrenholz@strato.de>
  * @version  Release: 1.0.0
  */
-class Modules_AcronisBackup_CustomButtons
+class Modules_AcronisBackup_CustomButtons extends pm_Hook_CustomButtons
 {
-
+    public function getButtons()
+    {
+        return [[
+            'place' => self::PLACE_ADMIN_TOOLS_AND_SETTINGS,
+            'title' => pm_Locale::lmsg('adminToolsButtonTitle'),
+            'description' => pm_Locale::lmsg('adminToolsButtonDescription'),
+            'icon' => pm_Context::getBaseUrl() . 'images/icon_64.png',
+            'link' => pm_Context::getBaseUrl() . 'index.php/admin/webspaceist',
+        ],[
+            'place' => self::PLACE_DOMAIN_PROPERTIES,
+            'title' => pm_Locale::lmsg('domainPropertiesButtonTitle'),
+            'description' => pm_Locale::lmsg('domainPropertiesButtonDescription'),
+            'icon' => pm_Context::getBaseUrl() . 'images/icon_64.png',
+            'link' => pm_Context::getBaseUrl() . 'index.php/index',
+        ]];
+    }
 }

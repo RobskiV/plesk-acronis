@@ -25,4 +25,8 @@ $messages = array(
     'configurationNav' => 'Settings',
     'configurationDescription' => 'Configure the connection to your Acronis Package',
     'errorNoClient' => "Couldn't retrieve configuration: you must be in the domain-view",
+    'adminToolsButtonDescription' => 'Review Acronis Backup settings',
+    'adminToolsButtonTitle' => 'Acronis Backup',
+    'domainPropertiesButtonTitle' => 'Acronis Backup',
+    'domainPropertiesButtonDescription' => 'Restore site from backup'
 );
