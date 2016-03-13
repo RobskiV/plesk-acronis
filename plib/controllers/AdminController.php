@@ -134,7 +134,7 @@ class AdminController extends pm_Controller_Action
                 'icon' => pm_Context::getBaseUrl() . '/images/ui-icons/gear_32.png',
                 'title' => pm_Locale::lmsg('adminViewConfigurationTitle'),
                 'description' => pm_Locale::lmsg('adminViewConfigurationDesc'),
-                'link' => pm_Context::getActionUrl('configuration', 'form'),
+                'link' => pm_Context::getActionUrl('configuration', 'adminform'),
             ),
         );
     }
