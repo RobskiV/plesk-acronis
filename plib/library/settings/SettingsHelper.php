@@ -61,4 +61,14 @@ class Modules_AcronisBackup_settings_SettingsHelper
 
         pm_Settings::set('backupSettings', $settings);
     }
+
+    public static function getMachineId()
+    {
+        return pm_Settings::get('machineId');
+    }
+
+    public static function setMachineId($machineId)
+    {
+        pm_Settings::set('machineId', $machineId);
+    }
 }
