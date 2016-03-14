@@ -130,8 +130,8 @@ class Modules_AcronisBackup_backups_BackupHelper
 
         $request2 = new Modules_AcronisBackup_webapi_Request($settings['host'], $settings['username'], $settings['password']);
         $response2 = $request2->request('GET', '/api/ams/archives/downloads/' . $responseArray["SessionID"] . '/dummy?format=ZIP&machineId=' . $machineId . '&fileName=backup.zip&start_download=1');
-        $filename = '/usr/local/psa/var/modules/acronis-backup/tmp/' . uniqid() . '.zip';
-        $fh= fopen($filename, 'w');
+        $filename = $domain . '.zip';
+        $fh = fopen('/usr/local/psa/var/modules/acronis-backup/tmp/' . $filename, 'w');
         fwrite($fh, $response2['body']);
         fclose($fh);
         

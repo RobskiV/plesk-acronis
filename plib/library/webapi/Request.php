@@ -231,7 +231,6 @@ class Modules_AcronisBackup_webapi_Request
 
         // Set the cURL options.
         curl_setopt_array($ch, $options);
-
         // Execute the request and close the connection.
         $content = curl_exec($ch);
 
@@ -240,10 +239,8 @@ class Modules_AcronisBackup_webapi_Request
             $message = curl_error($ch);
             throw new RuntimeException($message);
         }
-
         // Get the request information.
         $info = curl_getinfo($ch);
-
         // Close the connection.
         curl_close($ch);
 
@@ -276,7 +273,6 @@ class Modules_AcronisBackup_webapi_Request
          * sections which should be the last set of headers and the actual body.
          */
         $response = explode("\r\n\r\n", $content, 2 + $redirects);
-
         // Set the body for the response.
         $return['body'] = array_pop($response);
 
@@ -286,7 +282,6 @@ class Modules_AcronisBackup_webapi_Request
         // Get the response code from the first offset of the response headers.
         preg_match('/[0-9]{3}/', array_shift($headers), $matches);
         $code = count($matches) ? $matches[0] : null;
-
         if (is_numeric($code)) {
             $return['code'] = (int) $code;
         } else {

@@ -51,10 +51,17 @@ class RestoreController extends pm_Controller_Action
         if ($itemSliceFile == null || $itemSliceId == null) {
             $this->_status->addMessage('error', pm_Locale::lmsg('wrongUrlAlert'));
             $this->_helper->json(array('redirect' => pm_Context::getActionUrl('customer', 'index')));
+        } else {
+            $itemSliceFile = base64_decode($itemSliceFile);
         }
 
         try {
-            //Modules_AcronisBackup_backups_BackupHelper::getWebspaceBackup($itemSliceFile);
+            //$filename = Modules_AcronisBackup_backups_BackupHelper::getWebspaceBackup($itemSliceFile, pm_Session::getCurrentDomain()->getName());
+            $filename = 'test-1.strato.de';
+            echo exec('acropsh /usr/local/psa/admin/plib/modules/acronis-backup/scripts/restore.py --subscription='.$filename);exit;
+
+            var_dump($result);
+
         } catch (Exception $e) {
             $this->_status->addMessage('error', pm_Locale::lmsg('fileErrorAlert'));
             $this->_helper->json(array('redirect' => pm_Context::getActionUrl('customer', 'index')));
