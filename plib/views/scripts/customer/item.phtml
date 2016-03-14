@@ -1,0 +1,31 @@
+<p><?php echo pm_Locale::lmsg('customerItemIntro'); ?></p>
+
+<h3><?php echo pm_Locale::lmsg('customerItemSubtitle'); ?></h3>
+<div class="list-box">
+    <table class="list">
+        <tr>
+            <th>
+                <?php echo pm_Locale::lmsg('customerItemLabelDatetime'); ?>
+            </th>
+            <td>
+                <?php echo date("M d, Y G:H", $this->item->datetime); ?>
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                <?php echo pm_Locale::lmsg('customerItemLabelSize'); ?>
+            </th>
+            <td>
+                <?php echo $this->item->size; ?>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<a class="btn action" href="<?php echo pm_Context::getActionUrl('customer', 'list'); ?>">
+    <?php echo pm_Locale::lmsg('customerItemBack'); ?>
+</a>
+<a class="btn action" href="<?php echo pm_Context::getActionUrl('customer', 'restore'); ?>/<?php echo $this->item->id; ?>">
+    <?php echo pm_Locale::lmsg('customerItemRestorebutton'); ?>
+</a>

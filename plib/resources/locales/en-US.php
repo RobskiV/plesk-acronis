@@ -46,4 +46,17 @@ $messages = array(
     'accountSettingsTabTitle' => 'Account settings',
     'backupSettingsTabTitle' => 'Backup settings',
     'backupConfigSavedAlert' => 'The backup configuration was successfully saved',
+    'customerListDatetimeTitle' => 'Time and Date of Backup',
+    'customerListDetailTitle' => 'Details',
+    'customerListHeading' => 'Restorepoints for ',
+    'customerRestoreHeading' => 'Started restoring ',
+    'customerRestoreText' => 'The restore of this domain will be finished within a couple of minutes!',
+    'customerRestoreBack' => 'Back',
+    'customerItemHeading' => 'Restorepoint for ',
+    'customerItemIntro' => 'Here you can browse the details of the selected restore point',
+    'customerItemSubtitle' => 'Details',
+    'customerItemBack' =>'Back to list',
+    'customerItemRestorebutton' => 'Restore',
+    'customerItemLabelDatetime' => 'Time and Date',
+    'customerItemLabelSize' => 'Size'
 );

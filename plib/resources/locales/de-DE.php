@@ -45,4 +45,17 @@ $messages = array(
     'accountSettingsTabTitle' => 'Kontoeinstellungen',
     'backupSettingsTabTitle' => 'Backupeinstellungen',
     'backupConfigSavedAlert' => 'die Backup-Konfiguration wurde erfolgreich gespeichert',
+    'customerListDatetimeTitle' => 'Zeitpunkt des Backups',
+    'customerListDetailTitle' => 'Details',
+    'customerListHeading' => 'Wiederherstellungspunkte für ',
+    'customerRestoreHeading' => 'Wiederherstellung gestartet für ',
+    'customerRestoreText' => 'Die Wiederherstellung dieser Domain wird in wenigen Minuten abgeschlossen sein',
+    'customerRestoreBack' => 'Zurück',
+    'customerItemHeading' => 'Wiederherstellungspunkt für ',
+    'customerItemSubtitle' => 'Details',
+    'customerItemBack' =>'Zurück zur Übersicht',
+    'customerItemIntro' => 'Hier können Sie die Details Ihres Wiederherstellungspunkts betrachten',
+    'customerItemRestorebutton' => 'Wiederherstellen',
+    'customerItemLabelDatetime' => 'Zeitpunkt',
+    'customerItemLabelSize' => 'Größe'
 );

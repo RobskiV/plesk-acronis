@@ -35,7 +35,7 @@ class ConfigurationController extends pm_Controller_Action
      */
     public function indexAction()
     {
-        $this->_forward('form');
+        $this->_forward('account');
     }
 
     /**
