@@ -58,5 +58,6 @@ $messages = array(
     'customerItemBack' =>'Back to list',
     'customerItemRestorebutton' => 'Restore',
     'customerItemLabelDatetime' => 'Time and Date',
-    'customerItemLabelSize' => 'Size'
+    'customerItemLabelSize' => 'Size',
+    'serverIpLabel' => 'IP-address of your server',
 );

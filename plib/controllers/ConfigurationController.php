@@ -160,12 +160,7 @@ class ConfigurationController extends pm_Controller_Action
         $form->addElement('select', 'backupPlan', array(
             'label' => pm_Locale::lmsg('backupPlanLabel'),
             'value' => $settings['backupPlan'],
-            'multiOptions' => array(
-                'id1' => 'backup plan 1',
-                'id2' => 'backup plan 3',
-                'id3' => 'backup plan 3',
-                'id4' => 'backup plan 4',
-            ),
+            'multiOptions' => Modules_AcronisBackup_backups_BackupHelper::getBackupPlans(),
             'validators' => array(
                 array('NotEmpty', true),
             ),

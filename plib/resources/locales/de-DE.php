@@ -57,5 +57,6 @@ $messages = array(
     'customerItemIntro' => 'Hier können Sie die Details Ihres Wiederherstellungspunkts betrachten',
     'customerItemRestorebutton' => 'Wiederherstellen',
     'customerItemLabelDatetime' => 'Zeitpunkt',
-    'customerItemLabelSize' => 'Größe'
+    'customerItemLabelSize' => 'Größe',
+    'serverIpLabel' => 'IP-Adresse ihres Servers',
 );
