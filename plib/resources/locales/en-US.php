@@ -60,4 +60,9 @@ $messages = array(
     'customerItemLabelDatetime' => 'Time and Date',
     'customerItemLabelSize' => 'Size',
     'serverIpLabel' => 'IP-address of your server',
+    'webspaceRecovering' => 'A webspace is currently recovering its data: ',
+    'restoreWebspaceAction' => 'Restore your entire Webspace',
+    'webspaceRestoreRetrieving' => 'Your webspace is now being recovered. The action will complete in a few minutes.',
+    'fileErrorAlert' => 'The backup-file couldn\'t be retrieved for your webspace',
+    'wrongUrlAlert' => 'You are a bad person playing with our URLs? Shame on you!',
 );
