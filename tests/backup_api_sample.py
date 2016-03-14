@@ -1,3 +1,6 @@
+# @copyright (c) 2002-2016 Acronis International GmbH. All righs reserved.
+# @author Alexey Sakharov (alexey.sakharov@acronis.com)
+
 from acronis.tools.http import Session, urljoin
 from argparse import ArgumentParser
 from datetime import datetime

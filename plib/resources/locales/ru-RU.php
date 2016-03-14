@@ -26,7 +26,7 @@ $messages = array(
     'configurationNav' => 'Настройки',
     'configurationDescription' => 'Настроить соединение с Вашим Acronis аккаунтом.',
     'configurationPageTitle' => 'Acronis Backup настройки',
-    'errorNoClient' => "Неудалось получить настойки.",
+    'errorNoClient' => "Не удалось получить настойки.",
     'adminToolsButtonDescription' => 'Посмотреть Acronis Backup настройки',
     'adminToolsButtonTitle' => 'Acronis Backup',
     'domainPropertiesButtonTitle' => 'Acronis Backup',
@@ -45,5 +45,5 @@ $messages = array(
     'backupPlanLabel' => 'Выберите план резервного копирования',
     'accountSettingsTabTitle' => 'Настройки учетной записи',
     'backupSettingsTabTitle' => 'Настройки резервного копирования',
-    'backupConfigSavedAlert' => 'Настройки резервного копирования успешно сохранены',
+    'backupConfigSavedAlert' => 'Настройки резервного копирования успешно сохранены.',
 );
