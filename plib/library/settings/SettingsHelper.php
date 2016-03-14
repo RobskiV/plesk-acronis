@@ -44,9 +44,8 @@ class Modules_AcronisBackup_settings_SettingsHelper
 
         if ($settings == null) {
             $settings = array(
-                'host' => null,
-                'username' => null,
-                'password' => null,
+                'encryptionPassword' => null,
+                'backupPlan' => null,
             );
         } else {
             $settings = json_decode($settings, true);
@@ -60,5 +59,15 @@ class Modules_AcronisBackup_settings_SettingsHelper
         $settings = json_encode($settings);
 
         pm_Settings::set('backupSettings', $settings);
+    }
+
+    public static function getMachineId()
+    {
+        return pm_Settings::get('machineId');
+    }
+
+    public static function setMachineId($machineId)
+    {
+        pm_Settings::set('machineId', $machineId);
     }
 }
