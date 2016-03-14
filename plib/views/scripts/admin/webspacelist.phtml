@@ -2,11 +2,25 @@
     echo $this->renderTools($this->toolbar);
 ?>
     <label for="simpleAuthorizationMode"><?php echo pm_Locale::lmsg('simpleAuthorizationModeLabel'); ?></label>
-    <select id="simpleAuthorizationMode" data-rel="<?php echo $this->url(array('controller' => 'admin', 'action' => 'toggleauthorizationmode'))?>" onchange="toggleAuthorizationMode(this)">
-        <option value="extended" <?php if ($this->authorizationMode == 'extended') echo 'selected="selected"';?>>
+    <select id="simpleAuthorizationMode" data-rel="<?php echo $this->authorizationModeUrl?>" onchange="toggleAuthorizationMode(this)">
+        <option
+            value="extended"
+            <?php
+                if ($this->authorizationMode == 'extended') {
+                    echo 'selected="selected"';
+                }
+            ?>
+        >
             <?php echo pm_Locale::lmsg('simpleAuthorizationDisabled')?>
         </option>
-        <option value="simple" <?php if ($this->authorizationMode == 'simple') echo 'selected="selected"';?>>
+        <option
+            value="simple"
+            <?php
+                if ($this->authorizationMode == 'simple') {
+                    echo 'selected="selected"';
+                }
+            ?>
+        >
             <?php echo pm_Locale::lmsg('simpleAuthorizationEnabled')?>
         </option>
     </select>

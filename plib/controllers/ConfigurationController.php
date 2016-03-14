@@ -45,32 +45,48 @@ class ConfigurationController extends pm_Controller_Action
      *
      *
      */
-    public function adminformAction()
+    public function accountAction()
     {
-
         try {
             $domain = pm_Session::getCurrentDomain();
         } catch (pm_Exception $e) {
             $this->_status->addMessage('error', pm_Locale::lmsg('errorNoClient'));
             $this->_helper->json(array('redirect' => pm_Context::getBaseUrl()));
-            exit;
         }
 
-        $settings = pm_Settings::get('settings', null);
-
-        if ($settings == null) {
-            $settings = array(
-                'host' => null,
-                'username' => null,
-                'password' => null,
-            );
-        } else {
-            $settings = json_decode($settings, true);
-        }
+        $settings = Modules_AcronisBackup_settings_SettingsHelper::getAccountSettings();
 
 
         $this->view->domainName = $domain->getName();
+        $accountForm = $this->_getAccountForm($settings);
+        $this->_treatAccountForm($accountForm, $settings);
 
+        if ($settings['host'] != null) {
+            $this->view->tabs = $this->_getTabs();
+        } else {
+            $this->view->tabs = null;
+        }
+
+        $this->view->accountForm = $accountForm;
+    }
+
+    public function backupAction()
+    {
+        $accountSettings = Modules_AcronisBackup_settings_SettingsHelper::getAccountSettings();
+
+        if ($accountSettings['host'] == null) {
+            $this->_helper->json(array('redirect' => pm_Context::getActionUrl('configuration', 'account')));
+        }
+        $settings = Modules_AcronisBackup_settings_SettingsHelper::getBackupSettings();
+        $form = $this->_getBackupForm($settings);
+        $this->_treatBackupForm($form);
+
+        $this->view->backupForm = $form;
+        $this->view->tabs = $this->_getTabs();
+    }
+
+    private function _getAccountForm($settings)
+    {
         $form = new pm_Form_Simple();
 
         $form->addElement('text', 'host', array(
@@ -92,8 +108,9 @@ class ConfigurationController extends pm_Controller_Action
                             Zend_Validate_Callback::INVALID_VALUE => pm_Locale::lmsg('invalidUrlAlert'),
                         ),
                     ),
-            ),
-        )));
+                ),
+            )
+        ));
 
         $form->addElement('text', 'username', array(
             'label' => pm_Locale::lmsg('usernameLabel'),
@@ -103,6 +120,7 @@ class ConfigurationController extends pm_Controller_Action
                 array('NotEmpty', true),
             ),
         ));
+
         $form->addElement('password', 'password', array(
             'label' => pm_Locale::lmsg('passwordLabel'),
             'value' => $settings['password'],
@@ -112,9 +130,47 @@ class ConfigurationController extends pm_Controller_Action
         ));
 
         $form->addControlButtons(array(
-            'cancelLink' => pm_Context::getActionUrl('admin'),
+            'cancelLink' => pm_Context::getActionUrl('admin', 'index'),
         ));
 
+        return $form;
+    }
+
+    private function _getBackupForm($settings)
+    {
+        $form = new pm_Form_Simple();
+
+        $form->addElement('password', 'encryptionPassword', array(
+            'label' => pm_Locale::lmsg('encryptionPasswordLabel'),
+            'value' => $settings['encryptionPassword'],
+            'validators' => array(
+                array('StringLength', true, array(5, 255))
+            ),
+        ));
+
+        $form->addElement('select', 'backupPlan', array(
+            'label' => pm_Locale::lmsg('backupPlanLabel'),
+            'value' => $settings['backupPlan'],
+            'multiOptions' => array(
+                'id1' => 'backup plan 1',
+                'id2' => 'backup plan 3',
+                'id3' => 'backup plan 3',
+                'id4' => 'backup plan 4',
+            ),
+            'validators' => array(
+                array('NotEmpty', true),
+            ),
+        ));
+
+        $form->addControlButtons(array(
+            'cancelLink' => pm_Context::getActionUrl('admin', 'index'),
+        ));
+
+        return $form;
+    }
+
+    private function _treatAccountForm($form, $settings)
+    {
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
             $settings['host'] = $form->getValue('host');
             $settings['username'] = $form->getValue('username');
@@ -126,19 +182,47 @@ class ConfigurationController extends pm_Controller_Action
             try {
                 $request = new Modules_AcronisBackup_webapi_Request($settings['host'], $settings['username'], $settings['password']);
                 $request->request('GET', '/api/ams/session');
-            } catch(RuntimeException $e) {
+            } catch (RuntimeException $e) {
                 $this->_status->addMessage('error', pm_Locale::lmsg('configFailedAlert'));
-                $this->_helper->json(array('redirect' => pm_Context::getBaseUrl()));
+                $this->_helper->json(array('redirect' => pm_Context::getActionUrl('configuration', 'account')));
             }
 
-            $settings = json_encode($settings);
-
-            pm_Settings::set('settings', $settings);
+            Modules_AcronisBackup_settings_SettingsHelper::setAccountSettings($settings);
 
             $this->_status->addMessage('info', pm_Locale::lmsg('configSavedAlert'));
-            $this->_helper->json(array('redirect' => pm_Context::getBaseUrl()));
+            $this->_helper->json(array('redirect' => pm_Context::getActionUrl('configuration', 'backup')));
         }
+    }
 
-        $this->view->form = $form;
+    private function _treatBackupForm($form, $backupSettings)
+    {
+        if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
+            if ($form->getValue('encryptionPassword')) {
+                $backupSettings['encryptionPassword'] = $form->getValue('encryptionPassword');
+            }
+            $backupSettings['backupPlan'] = $form->getValue('backupPlan');
+
+            $backupSettings = json_encode($backupSettings);
+            pm_Settings::set('backupSettings', $backupSettings);
+
+            $this->_status->addMessage('info', pm_Locale::lmsg('backupConfigSavedAlert'));
+            $this->_helper->json(array('redirect' => pm_Context::getActionUrl('configuration', 'backup')));
+        }
+    }
+
+    private function _getTabs()
+    {
+        $tabs = array(
+            array(
+                'title' => pm_Locale::lmsg('accountSettingsTabTitle'),
+                'action' => 'account'
+            ),
+            array(
+                'title' => pm_Locale::lmsg('backupSettingsTabTitle'),
+                'action' => 'backup'
+            ),
+        );
+
+        return $tabs;
     }
 }

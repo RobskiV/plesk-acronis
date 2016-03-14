@@ -25,7 +25,14 @@ function toggleAuthorizationMode(scope)
         method: 'post',
         parameters: {value: val},
         onSuccess: function(transport) {
-            location.reload();
+            if (val == 'simple') {
+                $$('.list-box').first().hide();
+            } else if($$('.list-box').first() != undefined) {
+                $$('.list-box').first().show();
+            } else {
+                location.reload();
+            }
+
         }
     });
 }

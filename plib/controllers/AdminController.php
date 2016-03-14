@@ -34,6 +34,7 @@ class AdminController extends pm_Controller_Action
     {
         $this->view->pageTitle = pm_Locale::lmsg('adminViewSubscriptionTitle');
         $this->view->authorizationMode = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getAuthorizationMode();
+        $this->view->authorizationModeUrl = pm_Context::getActionUrl('admin', 'toggleauthorizationmode');
         $this->view->toolbar = $this->_getToolbar();
         if ($this->view->authorizationMode == 'extended') {
             $list = $this->_getSubscriptionList();
@@ -131,7 +132,7 @@ class AdminController extends pm_Controller_Action
                 'icon' => pm_Context::getBaseUrl() . '/images/ui-icons/gear_32.png',
                 'title' => pm_Locale::lmsg('adminViewConfigurationTitle'),
                 'description' => pm_Locale::lmsg('adminViewConfigurationDesc'),
-                'link' => pm_Context::getActionUrl('configuration', 'adminform'),
+                'link' => pm_Context::getActionUrl('configuration', 'account'),
             ),
         );
     }
