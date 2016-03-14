@@ -54,7 +54,7 @@ function dump_databases() {
     then
       log "Dumping database: $db"
       mysqldump -u$MYSQL_USER -p$MYSQL_PASSWORD --databases $db > $DB_DUMPS_LOCATION/$db.sql 2>>$LOGFILE
-      gzip $DB_DUMPS_LOCATION/$db.sql
+      gzip -f $DB_DUMPS_LOCATION/$db.sql
     fi 
   done
   log "The dumps have been created."
@@ -64,7 +64,7 @@ function dump_databases() {
 ## TBD.
 
 function main() {
-  log "$(date -Ins) ---------------------------------------------------------------------"
+  log "---------------------------------------------------------------------"
   log "Backup started"
   log "Executing pre data capture scripts..."
   create_metadata
@@ -72,7 +72,8 @@ function main() {
   then
     dump_databases
   fi
-  log "Pre pre data capture scripts have been executed."
+  log "Pre data capture scripts have been executed."
+  log "---------------------------------------------------------------------"
 }
 
 main
