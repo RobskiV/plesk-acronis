@@ -23,6 +23,7 @@ class Modules_AcronisBackup_settings_SettingsHelper
                 'host' => null,
                 'username' => null,
                 'password' => null,
+                'serverIp' => null,
             );
         } else {
             $settings = json_decode($settings, true);
@@ -63,11 +64,53 @@ class Modules_AcronisBackup_settings_SettingsHelper
 
     public static function getMachineId()
     {
-        return pm_Settings::get('machineId');
+        $machineId = pm_Settings::get('machineId');
+
+        if ($machineId == null) {
+            $machineId = self::_retrieveMachineId();
+            self::setMachineId($machineId);
+        }
+
+        return $machineId;
     }
 
     public static function setMachineId($machineId)
     {
         pm_Settings::set('machineId', $machineId);
+    }
+
+    private static function _retrieveMachineId()
+    {
+        $accountSettings = self::getAccountSettings();
+
+        if ($accountSettings['host'] == null) {
+            throw new Exception('Configuration is empty');
+        }
+
+        $client = new Modules_AcronisBackup_webapi_Request($accountSettings['host'], $accountSettings['username'], $accountSettings['password']);
+
+        $response = $client->request('get', '/api/ams/resources');
+
+        if ($response['code'] != 200 || !isset($response['body'])) {
+            throw new Exception('API returned unexpected response');
+        }
+
+        $result = json_decode($response['body'], true);
+
+        $data = $result['data'];
+        $machines = [];
+
+        foreach ($data as $item) {
+
+            if ($item['type'] == 'machine' && isset($item['ip']) && in_array($accountSettings['serverIp'], $item['ip'])) {
+                $machines[] = $item;
+            }
+        }
+
+        if (count($machines) != 1) {
+            throw new Exception('No unique result available');
+        }
+
+        return $machines[0]['id'];
     }
 }
