@@ -129,6 +129,15 @@ class ConfigurationController extends pm_Controller_Action
             ),
         ));
 
+        $form->addElement('text', 'serverIp', array(
+            'label' => pm_Locale::lmsg('serverIpLabel'),
+            'value' => $settings['serverIp'],
+            'validators' => array(
+                array('NotEmpty', true),
+                array('StringLength', true, array(7, 15)),
+            ),
+        ));
+
         $form->addControlButtons(array(
             'cancelLink' => pm_Context::getActionUrl('admin', 'index'),
         ));
@@ -174,6 +183,7 @@ class ConfigurationController extends pm_Controller_Action
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
             $settings['host'] = $form->getValue('host');
             $settings['username'] = $form->getValue('username');
+            $settings['serverIp'] = $form->getValue('serverIp');
             if ($form->getValue('password')) {
                 $settings['password'] = $form->getValue('password');
             }
