@@ -80,13 +80,14 @@ class CustomerController extends pm_Controller_Action
     {
         // @todo fetch restorepoints from API
         $domainId = $this->domain->getId();
-        $restorepoints = [];
+        $restorepoints = Modules_AcronisBackup_backups_BackupHelper::getRecoveryPoints();
 
         $data = [];
         foreach ($restorepoints as $restorepoint) {
+            $date = new DateTime($restorepoint['ItemSliceTime']);
             $data[] = array(
-                'column-1' => date("M d, Y G:H", $restorepoint->timestamp),
-                'column-2' => '<a href="'.pm_Context::getActionUrl('customer', 'item').'/' . $restorepoint->id . '" ><i class="icon"><img src="'.pm_Context::getBaseUrl().'/images/ui-icons/right_32.png'.'"/></i></a>',
+                'column-1' => date("M d, Y G:H", $date->format('U')),
+                'column-2' => '<a href="'.pm_Context::getActionUrl('customer', 'item').'/' . $restorepoint['ItemSliceName'] . '" ><i class="icon"><img src="'.pm_Context::getBaseUrl().'/images/ui-icons/right_32.png'.'"/></i></a>',
             );
         }
 
