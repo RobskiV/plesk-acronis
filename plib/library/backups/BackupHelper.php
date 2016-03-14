@@ -14,7 +14,8 @@
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */
 
-require_once(__DIR__ . '/../backups/BackupHelper.php');
+require_once(__DIR__ . '/../settings/SettingsHelper.php');
+require_once(__DIR__ . '/../webapi/Request.php');
 
 class Modules_AcronisBackup_backups_BackupHelper
 {
@@ -32,23 +33,21 @@ class Modules_AcronisBackup_backups_BackupHelper
         if (! isset($settings['password'])) {
             return;
         }
-        try {
-            $request = new Modules_AcronisBackup_webapi_Request($settings['host'], $settings['username'], $settings['password']);
-            $request->request('GET', '/api/ams/backup/plans');
-        } catch (RuntimeException $e) {
-            $this->_status->addMessage('error', pm_Locale::lmsg('configFailedAlert'));
-            $this->_helper->json(array('redirect' => pm_Context::getActionUrl('configuration', 'account')));
-        }
-var_dump($response);
 
-        return array(array(
-            "name" => "foo",
-            "date"=>  new DateTime(now)
-        ),
-            array(
-                "name" => "bar",
-                "date" => new DateTime(now)
-            )
-        );
+        $request = new Modules_AcronisBackup_webapi_Request($settings['host'], $settings['username'], $settings['password']);
+        $response = $request->request('GET', '/api/ams/backup/plans');
+
+        if ($response['code'] != 200 || !isset ($response['body'])){
+            throw new Exception('API returned unexpected response');
+        }
+
+        $responseArray = json_decode($response['body'],true);
+        
+        $planNames = [];
+        foreach ($responseArray['data'] as $instance) {
+            $planNames[] = $instance['name'];
+        }
+
+        return $planNames;
     }
 }
