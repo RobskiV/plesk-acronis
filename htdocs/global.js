@@ -36,3 +36,10 @@ function toggleAuthorizationMode(scope)
         }
     });
 }
+
+function pleaseConfirm(event, dialogContent) {
+    var confirmation = confirm(dialogContent);
+    if (!confirmation) {
+        Event.stop(event);
+    }
+}

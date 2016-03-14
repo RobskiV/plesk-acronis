@@ -79,7 +79,7 @@ class CustomerController extends pm_Controller_Action
             $date = new DateTime($restorepoint['ItemSliceTime']);
             $data[] = array(
                 'column-1' => '<a href="'.pm_Context::getActionUrl('customer', 'item').'/id/' . $restorepoint['ItemSliceName'] . '" >'.date("M d, Y G:H", $date->format('U')).'</a>',
-                'column-2' => '<a class="btn" href="'.pm_Context::getActionUrl('restore', 'webspace').'/id/' . $restorepoint['ItemSliceName'].'/resource/'.base64_encode($restorepoint['ItemSliceFile']).'">'.pm_Locale::lmsg('restoreWebspaceAction').'</a>'
+                'column-2' => '<a onclick="pleaseConfirm(event,\''.pm_Locale::lmsg('confirmDialog').'\')" class="btn" href="'.pm_Context::getActionUrl('restore', 'webspace').'/id/' . $restorepoint['ItemSliceName'].'/resource/'.base64_encode($restorepoint['ItemSliceFile']).'">'.pm_Locale::lmsg('restoreWebspaceAction').'</a>'
             );
         }
 

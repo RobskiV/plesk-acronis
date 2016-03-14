@@ -65,4 +65,5 @@ $messages = array(
     'webspaceRestoreRetrieving' => 'Your webspace is now being recovered. The action will complete in a few minutes.',
     'fileErrorAlert' => 'The backup-file couldn\'t be retrieved for your webspace',
     'wrongUrlAlert' => 'You are a bad person playing with our URLs? Shame on you!',
+    'confirmDialog' => 'Do you really want to recover this backup of your webspace?',
 );
