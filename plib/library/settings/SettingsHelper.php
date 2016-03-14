@@ -44,9 +44,8 @@ class Modules_AcronisBackup_settings_SettingsHelper
 
         if ($settings == null) {
             $settings = array(
-                'host' => null,
-                'username' => null,
-                'password' => null,
+                'encryptionPassword' => null,
+                'backupPlan' => null,
             );
         } else {
             $settings = json_decode($settings, true);
