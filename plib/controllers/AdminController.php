@@ -30,7 +30,7 @@ class AdminController extends pm_Controller_Action
      *
      * Action to display a list of webspaces and to enable these webspaces to perform a restore of their webspace
      */
-    public function webspacelistAction()
+    public function wespacelistAction()
     {
         $this->view->pageTitle = pm_Locale::lmsg('adminViewSubscriptionTitle');
         $this->view->authorizationMode = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getAuthorizationMode();
@@ -83,20 +83,20 @@ class AdminController extends pm_Controller_Action
         $list = new pm_View_List_Simple($this->view, $this->_request);
 
         $list->setData($data);
-        $list->setColumns(array(
-            "column-1" => array(
+        $list->setColumns([
+            "column-1" => [
                 "title" => pm_Locale::lmsg('adminListSubscriptionTitle'),
                 "searchable" => true,
                 "sortable" => true,
-            ),
-            "column-2" => array(
+            ],
+            "column-2" => [
                 "title" => pm_Locale::lmsg('adminListRestoreTitle'),
                 "noEscape" => true,
                 "searchable" => false,
                 "sortable" => false,
                 "noWrap" => true,
-            )
-        ));
+            ]
+        ]);
 
         $list->setDataUrl(array('action' => 'webspacelist-data'));
 
