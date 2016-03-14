@@ -22,7 +22,16 @@ if (!file_exists('/usr/local/psa/var/modules/acronis-backup/tmp')) {
 if (!file_exists('/usr/local/psa/var/modules/acronis-backup/databases')) {
     mkdir('/usr/local/psa/var/modules/acronis-backup/databases', 0644, true);
 }
+
 chown('/usr/local/psa/var/modules/acronis-backup', 'psaadm');
 chgrp('/usr/local/psa/var/modules/acronis-backup', 'psaadm');
 chown('/usr/local/psa/var/modules/acronis-backup/tmp', 'psaadm');
 chgrp('/usr/local/psa/var/modules/acronis-backup/tmp', 'psaadm');
+
+if (!file_exists('/usr/local/psa/var/modules/acronis-backup/logs/acronis-backup-extension.log')) {
+    $logFile = fopen('/usr/local/psa/var/modules/acronis-backup/logs/acronis-backup-extension.log', 'w');
+    fclose($logFile);
+}
+
+chown('/usr/local/psa/var/modules/acronis-backup/logs/acronis-backup-extension.log', 'psaadm');
+chgrp('/usr/local/psa/var/modules/acronis-backup/logs/acronis-backup-extension.log', 'psaadm');
