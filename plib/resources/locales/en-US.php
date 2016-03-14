@@ -15,7 +15,7 @@
 $messages = array(
     'submitConfigurationButton' => 'Save configuration',
     'cancelButton' => 'Cancel',
-    'configSavedAlert' => 'The configuration was successfully saved',
+    'configSavedAlert' => 'The account configuration was successfully saved',
     'configFailedAlert' => 'The configuration details provided are not correct',
     'invalidUrlAlert' => 'Please enter a valid URL',
     'hostLabel' => 'Acronis Host',
@@ -45,4 +45,5 @@ $messages = array(
     'backupPlanLabel' => 'Chosen backup plan',
     'accountSettingsTabTitle' => 'Account settings',
     'backupSettingsTabTitle' => 'Backup settings',
+    'backupConfigSavedAlert' => 'The backup configuration was successfully saved',
 );

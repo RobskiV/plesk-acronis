@@ -15,7 +15,7 @@
 $messages = array(
     'submitConfigurationButton' => 'Konfiguration speichern',
     'cancelButton' => 'Abbrechen',
-    'configSavedAlert' => 'Die Konfiguration wurde erfolgreich gespeichert',
+    'configSavedAlert' => 'Die Konto-Konfiguration wurde erfolgreich gespeichert',
     'configFailedAlert' => 'Die eingebenen Konfigurationsdaten sind nicht korrekt',
     'invalidUrlAlert' => 'Bitte geben Sie eine valide URL ein',
     'hostLabel' => 'Host der Acronis-Software',
@@ -40,4 +40,9 @@ $messages = array(
     'simpleAuthorizationEnabled' => 'Alle Abonnements freischalten',
     'simpleAuthorizationDisabled' => 'Per Abonnement entscheiden',
     'simpleAuthorizationModeLabel' => 'Freischaltungsmodus: ',
+    'encryptionPasswordLabel' => 'Encryption-Passwort',
+    'backupPlanLabel' => 'Ausgewählter Backup-Plan',
+    'accountSettingsTabTitle' => 'Kontoeinstellungen',
+    'backupSettingsTabTitle' => 'Backupeinstellungen',
+    'backupConfigSavedAlert' => 'die Backup-Konfiguration wurde erfolgreich gespeichert',
 );
