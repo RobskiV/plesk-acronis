@@ -30,7 +30,7 @@ class AdminController extends pm_Controller_Action
      *
      * Action to display a list of webspaces and to enable these webspaces to perform a restore of their webspace
      */
-    public function wespacelistAction()
+    public function webspacelistAction()
     {
         $this->view->pageTitle = pm_Locale::lmsg('adminViewSubscriptionTitle');
         $this->view->authorizationMode = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getAuthorizationMode();

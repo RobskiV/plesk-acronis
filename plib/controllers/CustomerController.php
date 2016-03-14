@@ -41,6 +41,7 @@ class CustomerController extends pm_Controller_Action
                 "title" => pm_Locale::lmsg('customerListDatetimeTitle'),
                 "searchable" => true,
                 "sortable" => true,
+                "noEscape" => true,
             ),
             "column-2" => array(
                 "title" => pm_Locale::lmsg('customerListDetailTitle'),
@@ -68,26 +69,17 @@ class CustomerController extends pm_Controller_Action
         $this->view->item = $item;
     }
 
-    public function restoreAction()
-    {
-        $this->view->pageTitle = pm_Locale::lmsg('customerRestoreHeading') . $this->domain->getName();
-
-        // @todo start acutal restore
-        $domainId = $this->domain->getId();
-    }
-
     private function _getRestorepoints()
     {
-        // @todo fetch restorepoints from API
-        $domainId = $this->domain->getId();
         $restorepoints = Modules_AcronisBackup_backups_BackupHelper::getRecoveryPoints();
 
         $data = [];
         foreach ($restorepoints as $restorepoint) {
+
             $date = new DateTime($restorepoint['ItemSliceTime']);
             $data[] = array(
-                'column-1' => date("M d, Y G:H", $date->format('U')),
-                'column-2' => '<a href="'.pm_Context::getActionUrl('customer', 'item').'/' . $restorepoint['ItemSliceName'] . '" ><i class="icon"><img src="'.pm_Context::getBaseUrl().'/images/ui-icons/right_32.png'.'"/></i></a>',
+                'column-1' => '<a href="'.pm_Context::getActionUrl('customer', 'item').'/id/' . $restorepoint['ItemSliceName'] . '" >'.date("M d, Y G:H", $date->format('U')).'</a>',
+                'column-2' => '<a onclick="pleaseConfirm(event,\''.pm_Locale::lmsg('confirmDialog').'\')" class="btn" href="'.pm_Context::getActionUrl('restore', 'webspace').'/id/' . $restorepoint['ItemSliceName'].'/resource/'.base64_encode($restorepoint['ItemSliceFile']).'">'.pm_Locale::lmsg('restoreWebspaceAction').'</a>'
             );
         }
 
