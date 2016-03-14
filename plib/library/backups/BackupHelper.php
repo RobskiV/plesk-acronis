@@ -88,7 +88,53 @@ class Modules_AcronisBackup_backups_BackupHelper
         }
 
         return $recoveryPoints;
+    }
 
+    /**
+     * getWebspaceBackup
+     *
+     * Description
+     *
+     * @param $itemSliceFile
+     *
+     * @throws Exception
+     */
+    public static function getWebspaceBackup($itemSliceFile, $domain) {
+        if (! isset($itemSliceFile)) {
+            throw new Exception('itemSliceFile missing');
+        }
 
+        $settings = Modules_AcronisBackup_settings_SettingsHelper::getAccountSettings();
+        if (! isset($settings['password'])) {
+            return;
+        }
+
+        $request = new Modules_AcronisBackup_webapi_Request($settings['host'], $settings['username'], $settings['password']);
+        $machineId = Modules_AcronisBackup_settings_SettingsHelper::getMachineId();
+        $response = $request->request('POST', '/api/ams/archives/dummy/backups/dummy/items?machineId=' . $machineId . '&backupId=' . urlencode($itemSliceFile) . '&type=files');
+        $responseArray = json_decode($response['body'], true);
+
+      //  $domain = pm_Session::getCurrentDomain()->getName();
+        $filePath = trim($responseArray["data"][0]["name"]) . "/var/www/vhosts/" . $domain;
+
+        $payload = [
+            "format" => "ZIP",
+            "machineId" => $machineId,
+             "backupId" => $itemSliceFile,
+             "backupUri" => $itemSliceFile,
+             "items" => [$filePath,],
+             "credentials" => []];
+
+        $response = $request->request('POST', '/api/ams/archives/downloads?machineId=' . $machineId, $payload);
+        $responseArray = json_decode($response['body'], true);
+
+        $request2 = new Modules_AcronisBackup_webapi_Request($settings['host'], $settings['username'], $settings['password']);
+        $response2 = $request2->request('GET', '/api/ams/archives/downloads/' . $responseArray["SessionID"] . '/dummy?format=ZIP&machineId=' . $machineId . '&fileName=backup.zip&start_download=1');
+        $filename = '/usr/local/psa/var/modules/acronis-backup/tmp/' . uniqid() . '.zip';
+        $fh= fopen($filename, 'w');
+        fwrite($fh, $response2['body']);
+        fclose($fh);
+        
+        return $filename;
     }
 }

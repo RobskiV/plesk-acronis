@@ -77,7 +77,7 @@ class Modules_AcronisBackup_webapi_Request
      *
      * @return array
      */
-    public function request($method, $endpoint, $data = null)
+    public function request($method, $endpoint, $data = [])
     {
         return $this->call($method, $this->apiHost . $endpoint, $data);
     }
@@ -199,7 +199,7 @@ class Modules_AcronisBackup_webapi_Request
         $options[CURLOPT_NOBODY] = ($method === 'HEAD');
 
         // If data exists let's encode it
-        if (isset($data)) {
+        if (isset($data) && $method != 'GET') {
             $options[CURLOPT_POSTFIELDS] = json_encode($data);
         }
 
