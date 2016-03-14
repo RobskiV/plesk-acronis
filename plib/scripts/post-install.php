@@ -16,5 +16,11 @@
 if (!file_exists('/usr/local/psa/var/modules/acronis-backup')) {
     mkdir('/usr/local/psa/var/modules/acronis-backup', 0777, true);
 }
+if (!file_exists('/usr/local/psa/var/modules/acronis-backup/logs')) {
+    mkdir('/usr/local/psa/var/modules/acronis-backup/logs', 0777, true);
+}
+if (!file_exists('/usr/local/psa/var/modules/acronis-backup/databases')) {
+    mkdir('/usr/local/psa/var/modules/acronis-backup/databases', 0644, true);
+}
 chown('/usr/local/psa/var/modules/acronis-backup', 'psaadm');
 chgrp('/usr/local/psa/var/modules/acronis-backup', 'psaadm');
