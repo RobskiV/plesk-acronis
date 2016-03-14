@@ -41,4 +41,9 @@ $messages = array(
     'simpleAuthorizationEnabled' => 'Включить для всех подписок',
     'simpleAuthorizationDisabled' => 'Выбрать конкретные подписки',
     'simpleAuthorizationModeLabel' => 'Тип авторизации:',
+    'encryptionPasswordLabel' => 'Зашифрованный пароль',
+    'backupPlanLabel' => 'Выберите план резервного копирования',
+    'accountSettingsTabTitle' => 'Настройки учетной записи',
+    'backupSettingsTabTitle' => 'Настройки резервного копирования',
+    'backupConfigSavedAlert' => 'Настройки резервного копирования успешно сохранены',
 );
