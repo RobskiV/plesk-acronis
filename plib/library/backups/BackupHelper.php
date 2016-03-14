@@ -81,7 +81,8 @@ class Modules_AcronisBackup_backups_BackupHelper
             if ($instance['backupPlan'] === $backupSettings['backupPlan']) {
                 $recoveryPoints[] = array(
                     'ItemSliceName' => $instance['ItemSliceName'],
-                    'ItemSliceTime' => $instance['ItemSliceTime']
+                    'ItemSliceTime' => $instance['ItemSliceTime'],
+                    'ItemSliceFile' => $instance['ItemSliceFile']
                 );
             }
         }
