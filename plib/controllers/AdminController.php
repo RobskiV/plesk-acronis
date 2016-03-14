@@ -32,6 +32,7 @@ class AdminController extends pm_Controller_Action
      */
     public function webspacelistAction()
     {
+        Modules_AcronisBackup_settings_SettingsHelper::getIpAddresses();
         $this->view->pageTitle = pm_Locale::lmsg('adminViewSubscriptionTitle');
         $this->view->authorizationMode = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getAuthorizationMode();
         $this->view->authorizationModeUrl = pm_Context::getActionUrl('admin', 'toggleauthorizationmode');

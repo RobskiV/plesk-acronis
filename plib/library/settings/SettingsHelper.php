@@ -23,7 +23,6 @@ class Modules_AcronisBackup_settings_SettingsHelper
                 'host' => null,
                 'username' => null,
                 'password' => null,
-                'serverIp' => null,
             );
         } else {
             $settings = json_decode($settings, true);
@@ -79,6 +78,27 @@ class Modules_AcronisBackup_settings_SettingsHelper
         pm_Settings::set('machineId', $machineId);
     }
 
+    public static function getIpAddresses()
+    {
+        $request = <<<APICALL
+<ip>
+  <get/>
+</ip>
+APICALL;
+
+        $elements = json_encode(pm_ApiRpc::getService()->call($request, 'admin'));
+        $elements = json_decode($elements, true);
+        $elements = $elements['ip']['get']['result']['addresses'];
+
+        $ipAddresses = [];
+
+        foreach ($elements as $element) {
+            $ipAddresses[] = $element['ip_address'];
+        }
+
+        return $ipAddresses;
+    }
+
     private static function _retrieveMachineId()
     {
         $accountSettings = self::getAccountSettings();
@@ -100,9 +120,11 @@ class Modules_AcronisBackup_settings_SettingsHelper
         $data = $result['data'];
         $machines = [];
 
+        $ipAddresses = Modules_AcronisBackup_settings_SettingsHelper::getIpAddresses();
+
         foreach ($data as $item) {
 
-            if ($item['type'] == 'machine' && isset($item['ip']) && in_array($accountSettings['serverIp'], $item['ip'])) {
+            if ($item['type'] == 'machine' && isset($item['ip']) && !empty(array_intersect($ipAddresses, $item['ip']))) {
                 $machines[] = $item;
             }
         }
