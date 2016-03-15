@@ -7,7 +7,7 @@
  * Date: 11.03.16
  * Time: 16:25
  *
- * Short Info
+ * Contains the IndexController class
  *
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */
@@ -15,7 +15,7 @@
 /**
  * Class IndexController
  *
- * Controller for all general stuff that is neither configuration nor backup
+ * Main Controller of the extension
  *
  * @category Controller
  * @author   Vincent Fahrenholz <fahrenholz@strato.de>
@@ -26,9 +26,7 @@ class IndexController extends pm_Controller_Action
     /**
      * indexAction
      *
-     * Description
-     *
-     *
+     * Redefines the default action
      */
     public function indexAction()
     {

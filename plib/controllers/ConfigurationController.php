@@ -7,20 +7,27 @@
  * Date: 11.03.16
  * Time: 16:25
  *
- * Short Info
+ * Contains the ConfigurationController class
  *
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */
 
-
+/**
+ * Class ConfigurationController
+ *
+ * Controller holding all actions related to the saving of basic settings
+ *
+ * @category Controller
+ * @author   Vincent Fahrenholz <fahrenholz@strato.de>
+ * @version  Release: 1.0.0
+ */
 class ConfigurationController extends pm_Controller_Action
 {
+
     /**
      * init
      *
-     * Description
-     *
-     *
+     * Override to fix the page title once and for all for all actions
      */
     public function init()
     {
@@ -28,10 +35,11 @@ class ConfigurationController extends pm_Controller_Action
         $this->view->pageTitle = pm_Locale::lmsg('configurationPageTitle');
     }
 
+
     /**
      * indexAction
      *
-     * Description
+     * Main action of the controller. forwards to accountAction()
      */
     public function indexAction()
     {
@@ -39,11 +47,9 @@ class ConfigurationController extends pm_Controller_Action
     }
 
     /**
-     * formAction
+     * accountAction
      *
-     * Description
-     *
-     *
+     * Displays the account settings view and checks and saves the data the user puts into it
      */
     public function accountAction()
     {
@@ -58,11 +64,11 @@ class ConfigurationController extends pm_Controller_Action
 
 
         $this->view->domainName = $domain->getName();
-        $accountForm = $this->_getAccountForm($settings);
-        $this->_treatAccountForm($accountForm, $settings);
+        $accountForm = $this->getAccountForm($settings);
+        $this->treatAccountForm($accountForm, $settings);
 
         if ($settings['host'] != null) {
-            $this->view->tabs = $this->_getTabs();
+            $this->view->tabs = $this->getTabs();
         } else {
             $this->view->tabs = null;
         }
@@ -70,6 +76,11 @@ class ConfigurationController extends pm_Controller_Action
         $this->view->accountForm = $accountForm;
     }
 
+    /**
+     * backupAction
+     *
+     * Displays the backup settings view and checks and saves the data the user puts into it
+     */
     public function backupAction()
     {
         $accountSettings = Modules_AcronisBackup_settings_SettingsHelper::getAccountSettings();
@@ -78,14 +89,23 @@ class ConfigurationController extends pm_Controller_Action
             $this->_helper->json(array('redirect' => pm_Context::getActionUrl('configuration', 'account')));
         }
         $settings = Modules_AcronisBackup_settings_SettingsHelper::getBackupSettings();
-        $form = $this->_getBackupForm($settings);
-        $this->_treatBackupForm($form);
+        $form = $this->getBackupForm($settings);
+        $this->treatBackupForm($form);
 
         $this->view->backupForm = $form;
-        $this->view->tabs = $this->_getTabs();
+        $this->view->tabs = $this->getTabs();
     }
 
-    private function _getAccountForm($settings)
+    /**
+     * getAccountForm
+     *
+     * Generates the form used for the accountAction
+     *
+     * @param array $settings Account Settings already provided by the administrator
+     *
+     * @return pm_Form_Simple
+     */
+    private function getAccountForm($settings)
     {
         $form = new pm_Form_Simple();
 
@@ -136,7 +156,17 @@ class ConfigurationController extends pm_Controller_Action
         return $form;
     }
 
-    private function _getBackupForm($settings)
+    /**
+     * getBackupForm
+     *
+     * Generates the form used by the backupAction
+     *
+     * @param array $settings Backup-Settings already given by the user
+     *
+     * @return pm_Form_Simple
+     * @throws Exception When the API-Call to Acronis produces some error
+     */
+    private function getBackupForm($settings)
     {
         $form = new pm_Form_Simple();
 
@@ -170,7 +200,15 @@ class ConfigurationController extends pm_Controller_Action
         return $form;
     }
 
-    private function _treatAccountForm($form, $settings)
+    /**
+     * treatAccountForm
+     *
+     * Validates and saves the data provided by the user via the Account-Form
+     *
+     * @param pm_Form_Simple $form     Account-Form
+     * @param array          $settings Account-Settings already provided by the user
+     */
+    private function treatAccountForm($form, $settings)
     {
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
             $settings['host'] = $form->getValue('host');
@@ -191,27 +229,42 @@ class ConfigurationController extends pm_Controller_Action
             Modules_AcronisBackup_settings_SettingsHelper::setAccountSettings($settings);
 
             $this->_status->addMessage('info', pm_Locale::lmsg('configSavedAlert'));
-            $this->_helper->json(array('redirect' => pm_Context::getActionUrl('configuration', 'backup')));
+            $this->_helper->json(array('redirect' => pm_Context::getActionUrl('configuration', 'account')));
         }
     }
 
-    private function _treatBackupForm($form, $backupSettings)
+    /**
+     * treatBackupForm
+     *
+     * Validates and saves the data provided by the user via the backup-form
+     *
+     * @param pm_Form_Simple $form     Backup-Form
+     * @param array          $settings Backup-settings already provided by the user
+     */
+    private function treatBackupForm($form, $settings)
     {
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
             if ($form->getValue('encryptionPassword')) {
-                $backupSettings['encryptionPassword'] = $form->getValue('encryptionPassword');
+                $settings['encryptionPassword'] = $form->getValue('encryptionPassword');
             }
-            $backupSettings['backupPlan'] = $form->getValue('backupPlan');
+            $settings['backupPlan'] = $form->getValue('backupPlan');
 
-            $backupSettings = json_encode($backupSettings);
-            pm_Settings::set('backupSettings', $backupSettings);
+            $settings = json_encode($settings);
+            pm_Settings::set('backupSettings', $settings);
 
             $this->_status->addMessage('info', pm_Locale::lmsg('backupConfigSavedAlert'));
             $this->_helper->json(array('redirect' => pm_Context::getActionUrl('configuration', 'backup')));
         }
     }
 
-    private function _getTabs()
+    /**
+     * getTabs
+     *
+     * Generate the tabs displayed in the form
+     *
+     * @return array
+     */
+    private function getTabs()
     {
         $tabs = array(
             array(

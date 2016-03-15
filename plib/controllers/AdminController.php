@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This File is a part of the plesk-acronis extension (https://github.com/StratoAG/plesk-acronis)
  *
@@ -8,56 +7,76 @@
  * Date: 13.03.16
  * Time: 11:51
  *
- * Short Info
+ * Contains the AdminController class
  *
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */
 
+/**
+ * Class AdminController
+ *
+ * Controller for all actions relevant to Admin functionalities other than basic settings (@see ConfigurationController)
+ *
+ * @category Controller
+ * @author   Vincent Fahrenholz <fahrenholz@strato.de>
+ * @version  Release: 1.0.0
+ */
 class AdminController extends pm_Controller_Action
 {
     /**
      * indexAction
      *
-     * Main action of the controller. Forwards to webspaceListAction
+     * Main action of the controller. Forwards to listAction
      */
     public function indexAction()
     {
-        $this->_forward('webspacelist');
+        $this->_forward('list');
     }
 
     /**
-     * webspaceListAction
+     * listAction
      *
-     * Action to display a list of webspaces and to enable these webspaces to perform a restore of their webspace
+     * Manages the availability of the restore functionality for the subscriptions
      */
-    public function webspacelistAction()
+    public function listAction()
     {
         Modules_AcronisBackup_settings_SettingsHelper::getIpAddresses();
         $this->view->pageTitle = pm_Locale::lmsg('adminViewSubscriptionTitle');
         $this->view->authorizationMode = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getAuthorizationMode();
         $this->view->authorizationModeUrl = pm_Context::getActionUrl('admin', 'toggleauthorizationmode');
-        $this->view->toolbar = $this->_getToolbar();
+        $this->view->toolbar = $this->getToolbar();
         if ($this->view->authorizationMode == 'extended') {
-            $list = $this->_getSubscriptionList();
+            $list = $this->getSubscriptionList();
             // List object for pm_View_Helper_RenderList
             $this->view->list = $list;
         }
     }
 
 
+    /**
+     * togglesubscriptionAction
+     *
+     * Enables or disables the given subscriptions sestore functionality
+     */
     public function togglesubscriptionAction()
     {
-        $id = $this->_request->getParam('id');
+        $subscriptionId = $this->_request->getParam('id');
         $oldStatus = (bool) $this->_request->getParam('oldStatus');
         $newStatus = !$oldStatus;
 
         $enabledSubscriptions = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getEnabledSubscriptions();
-        $enabledSubscriptions[$id] = $newStatus;
+        $enabledSubscriptions[$subscriptionId] = $newStatus;
         Modules_AcronisBackup_subscriptions_SubscriptionHelper::setEnabledSubscriptions($enabledSubscriptions);
 
         $this->_helper->json(array('newStatus'=>$newStatus));
     }
 
+    /**
+     * toggleauthorizationmodeAction
+     *
+     * Toggles the Mode used to determine the presence of the subscriptions backup possibility between simple
+     * (all subscriptions enabled) and extended (The administrator has to specify the enabled subscriptions)
+     */
     public function toggleauthorizationmodeAction()
     {
         $value = $this->_request->getParam('value');
@@ -66,25 +85,37 @@ class AdminController extends pm_Controller_Action
         $this->_helper->json(array("value"=>$value));
     }
 
-    public function webspacelistDataAction()
+    /**
+     * listDataAction
+     *
+     * Sends all informations needed to refresh the list displayed during the listAction
+     */
+    public function listDataAction()
     {
         $this->view->authorizationMode = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getAuthorizationMode();
 
         if ($this->view->authorizationMode == 'extended') {
-            $list = $this->_getSubscriptionList();
+            $list = $this->getSubscriptionList();
             // List object for pm_View_Helper_RenderList
             $this->_helper->json($list->fetchData());
         }
     }
 
-    private function _getSubscriptionList()
+    /**
+     * getSubscriptionList
+     *
+     * Generates a Plesk List
+     *
+     * @return pm_View_List_Simple
+     */
+    private function getSubscriptionList()
     {
-        $data = $this->_getSubscriptionData();
+        $data = $this->getSubscriptionData();
 
         $list = new pm_View_List_Simple($this->view, $this->_request);
 
         $list->setData($data);
-        $list->setColumns([
+        $columns = [
             "column-1" => [
                 "title" => pm_Locale::lmsg('adminListSubscriptionTitle'),
                 "searchable" => true,
@@ -97,18 +128,26 @@ class AdminController extends pm_Controller_Action
                 "sortable" => false,
                 "noWrap" => true,
             ]
-        ]);
+        ];
 
-        $list->setDataUrl(array('action' => 'webspacelist-data'));
+        $list->setColumns($columns);
+
+        $list->setDataUrl(array('action' => 'list-data'));
 
         return $list;
     }
 
-    private function _getSubscriptionData()
+    /**
+     * getSubscriptionData
+     *
+     * Returns the data displayed in the subscription list, already organized in columns as needed by pm_View_List_Simple
+     *
+     * @return array
+     */
+    private function getSubscriptionData()
     {
         $enabledSubscriptions = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getEnabledSubscriptions();
         $subscriptions = Modules_AcronisBackup_Subscriptions_SubscriptionHelper::getSubscriptions();
-        $iconPath = pm_Context::getBaseUrl() . 'images/icon_64.png';
         $data = [];
         foreach ($subscriptions as $subscription) {
             if (isset($enabledSubscriptions[$subscription]) && $enabledSubscriptions[$subscription]) {
@@ -126,7 +165,14 @@ class AdminController extends pm_Controller_Action
         return $data;
     }
 
-    private function _getToolbar()
+    /**
+     * getToolbar
+     *
+     * Generates a toolbar which is renderable in the view
+     *
+     * @return array
+     */
+    private function getToolbar()
     {
         return array(
             array(

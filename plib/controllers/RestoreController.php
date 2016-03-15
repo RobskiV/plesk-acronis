@@ -7,15 +7,15 @@
  * Date: 11.03.16
  * Time: 16:25
  *
- * Short Info
+ * Contains the RestoreController class
  *
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */
 
 /**
- * Class BackupController
+ * Class RestoreController
  *
- * Controller for all backup-actions
+ * Controller handling all actions relevant to backup-recovery-functionality
  *
  * @category Controller
  * @author   Vincent Fahrenholz <fahrenholz@strato.de>
@@ -24,21 +24,9 @@
 class RestoreController extends pm_Controller_Action
 {
     /**
-     * init
+     * webspaceAction
      *
-     * Description
-     */
-    public function init()
-    {
-        parent::init();
-    }
-
-    /**
-     * indexAction
-     *
-     * Description
-     *
-     *
+     * Action used to restore one entire webspace
      */
     public function webspaceAction()
     {
@@ -57,7 +45,6 @@ class RestoreController extends pm_Controller_Action
 
         try {
             $filename = Modules_AcronisBackup_backups_BackupHelper::getWebspaceBackup($itemSliceFile, pm_Session::getCurrentDomain()->getName());
-            $filename = 'test-1.strato.de';
             exec('/usr/local/psa/admin/bin/modules/acronis-backup/restore.sh '.$filename);
 
         } catch (Exception $e) {
