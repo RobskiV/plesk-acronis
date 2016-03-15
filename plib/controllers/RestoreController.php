@@ -56,11 +56,9 @@ class RestoreController extends pm_Controller_Action
         }
 
         try {
-            //$filename = Modules_AcronisBackup_backups_BackupHelper::getWebspaceBackup($itemSliceFile, pm_Session::getCurrentDomain()->getName());
+            $filename = Modules_AcronisBackup_backups_BackupHelper::getWebspaceBackup($itemSliceFile, pm_Session::getCurrentDomain()->getName());
             $filename = 'test-1.strato.de';
-            echo exec('acropsh /usr/local/psa/admin/plib/modules/acronis-backup/scripts/restore.py --subscription='.$filename);exit;
-
-            var_dump($result);
+            exec('/usr/local/psa/admin/bin/modules/acronis-backup/restore.sh '.$filename);
 
         } catch (Exception $e) {
             $this->_status->addMessage('error', pm_Locale::lmsg('fileErrorAlert'));

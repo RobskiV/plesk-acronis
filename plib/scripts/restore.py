@@ -41,7 +41,7 @@ def _rename_legacy_subscription(subscription):
     new_name = os.path.join(PLESK_WORKSPACES_ROOT, "{}.{}.backup".format(subscription, date))
     if os.path.exists(new_name):
         import shutil
-        shutil.rmtree(new_name)       
+        shutil.rmtree(new_name)
     logging.debug("Rename legacy workspace, new name %s.", new_name)
     os.rename(workspace, new_name)
 
