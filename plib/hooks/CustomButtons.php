@@ -8,7 +8,7 @@
  * Date: 13.03.16
  * Time: 11:21
  *
- * Short Info
+ * Contains the Modules_AcronisBackup_CustomButtons class
  *
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */
@@ -16,7 +16,7 @@
 /**
  * Class Modules_AcronisBackup_CustomButtons
  *
- * Description
+ * Hook providing custom buttons for the acronis-backup-extension
  *
  * @category Hook
  * @author   Vincent Fahrenholz <fahrenholz@strato.de>
@@ -24,6 +24,15 @@
  */
 class Modules_AcronisBackup_CustomButtons extends pm_Hook_CustomButtons
 {
+    /**
+     * getButtons
+     *
+     * Generats two custom buttons, one under Tools & Settings, one in the Webspace-Panel. The Webspace-Panel-Button
+     * only is generated if the current user is admin or if the current subscription has the restore functionality
+     * enabled
+     *
+     * @return array
+     */
     public function getButtons()
     {
         $customButtons=[[
