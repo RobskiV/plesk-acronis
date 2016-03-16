@@ -40,7 +40,7 @@ class Modules_AcronisBackup_CustomButtons extends pm_Hook_CustomButtons
             'title' => pm_Locale::lmsg('adminToolsButtonTitle'),
             'description' => pm_Locale::lmsg('adminToolsButtonDescription'),
             'icon' => pm_Context::getBaseUrl() . 'images/icon_64.png',
-            'link' => pm_Context::getBaseUrl() . 'index.php/admin/webspacelist',
+            'link' => pm_Context::getBaseUrl() . 'index.php/admin/list',
         ]];
         $domain = pm_Session::getCurrentDomain();
         $client = pm_Session::getClient();

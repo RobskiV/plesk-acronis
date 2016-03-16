@@ -9,7 +9,7 @@
  * Date: 3/13/16
  * Time: 2:00 PM
  *
- * Short Info
+ * Contains the Modules_AcronisBackup_backups_BackupHelper class
  *
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */
@@ -17,15 +17,24 @@
 require_once(__DIR__ . '/../settings/SettingsHelper.php');
 require_once(__DIR__ . '/../webapi/Request.php');
 
+/**
+ * Class Modules_AcronisBackup_backups_BackupHelper
+ *
+ * Provides library-functions
+ *
+ * @category Helper
+ * @author   Vincent Fahrenholz <fahrenholz@strato.de>
+ * @version  Release: 1.0.0
+ */
 class Modules_AcronisBackup_backups_BackupHelper
 {
     /**
      * getBackupPlans
      *
-     * Description
+     * Retrieves the backup plans configured in the Acronis-Frontend and returns them
      *
-     *
-     * @return array
+     * @return array|void
+     * @throws Exception
      */
     public static function getBackupPlans()
     {
@@ -135,6 +144,6 @@ class Modules_AcronisBackup_backups_BackupHelper
         fwrite($fh, $response2['body']);
         fclose($fh);
         
-        return $filename;
+        return $domain;
     }
 }
