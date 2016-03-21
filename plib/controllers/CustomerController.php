@@ -59,10 +59,53 @@ class CustomerController extends pm_Controller_Action
     {
         $this->view->pageTitle = pm_Locale::lmsg('customerListHeading') . $this->domain->getName();
 
+        $list = $this->getRecoveryPointList();
+        $list->setDataUrl(array('action' => 'listdata'));
+
+        $this->view->list = $list;
+    }
+
+    /**
+     * listDataAction
+     *
+     * Action to retrieve only the list data
+     *
+     * @return array
+     */
+    public function listdataAction()
+    {
+        $list = $this->getRecoveryPointList();
+
+        $this->_helper->json($list->fetchData());
+    }
+
+    /**
+     * getRecoveryPointList
+     *
+     * Generates the list used for listAction()
+     *
+     * @return pm_View_List_Simple
+     */
+    private function getRecoveryPointList()
+    {
         $data = $this->getRestorepoints();
+
         $list = new pm_View_List_Simple($this->view, $this->_request);
         $list->setData($data);
+        $list->setColumns($this->getColumns());
 
+        return $list;
+    }
+
+    /**
+     * getColumns
+     *
+     * Generates the columns needed for listAction()
+     *
+     * @return array
+     */
+    private function getColumns()
+    {
         $columns = [
             "column-1" => [
                 "title" => pm_Locale::lmsg('customerListDatetimeTitle'),
@@ -79,11 +122,7 @@ class CustomerController extends pm_Controller_Action
             ]
         ];
 
-        $list->setColumns($columns);
-
-        $list->setDataUrl(array('action' => 'list'));
-
-        $this->view->list = $list;
+        return $columns;
     }
 
     /**
@@ -116,11 +155,12 @@ class CustomerController extends pm_Controller_Action
 
         $data = [];
         foreach ($recoveryPoints as $recoveryPoint) {
-
+            $column2 = '<a class="btn" href="'.pm_Context::getActionUrl('customer', 'item').'/id/' . $recoveryPoint['ItemSliceName'] . '" >'.pm_Locale::lmsg('recoveryPointDetailsButton').'</a>'
+                .'<a onclick="pleaseConfirm(event,\''.pm_Locale::lmsg('confirmDialog').'\')" class="btn" href="'.pm_Context::getActionUrl('restore', 'webspace').'/id/' . $recoveryPoint['ItemSliceName'].'/resource/'.base64_encode($recoveryPoint['ItemSliceFile']).'">'.pm_Locale::lmsg('restoreWebspaceAction').'</a>';
             $date = new DateTime($recoveryPoint['ItemSliceTime']);
             $data[] = array(
-                'column-1' => '<a href="'.pm_Context::getActionUrl('customer', 'item').'/id/' . $recoveryPoint['ItemSliceName'] . '" >'.date("M d, Y G:H", $date->format('U')).'</a>',
-                'column-2' => '<a onclick="pleaseConfirm(event,\''.pm_Locale::lmsg('confirmDialog').'\')" class="btn" href="'.pm_Context::getActionUrl('restore', 'webspace').'/id/' . $recoveryPoint['ItemSliceName'].'/resource/'.base64_encode($recoveryPoint['ItemSliceFile']).'">'.pm_Locale::lmsg('restoreWebspaceAction').'</a>'
+                'column-1' => date("M d, Y G:H", $date->format('U')),
+                'column-2' => $column2,
             );
         }
 
