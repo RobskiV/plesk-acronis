@@ -71,7 +71,7 @@ class CustomerController extends pm_Controller_Action
                 "noEscape" => true,
             ],
             "column-2" => [
-                "title" => pm_Locale::lmsg('customerListDetailTitle'),
+                "title" => pm_Locale::lmsg('customerListActionTitle'),
                 "noEscape" => true,
                 "searchable" => false,
                 "sortable" => false,

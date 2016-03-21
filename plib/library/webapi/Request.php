@@ -18,36 +18,60 @@
  *
  * This is a wrapper class for the acronis webbackup api
  *
- * @category
- *
- * @author  David Jardin <david.jardin@community.joomla.org>
- * @version Release: 1.0.0
+ * @category Helper
+ * @author   David Jardin <david.jardin@community.joomla.org>
+ * @version  Release: 1.0.0
  */
 class Modules_AcronisBackup_webapi_Request
 {
+    /**
+     * Endpoint for login-call
+     */
     const LOGINENDPOINT = "/api/1/login";
+
+    /**
+     * Endpoint for informations about which API to use
+     */
     const INFOENDPOINT = "/api/1/groups/self/backupconsole";
 
+    /**
+     * @var array Jar storing cookies as told by cURL
+     */
     private $cookiejars = [];
 
+    /**
+     * @var null|string host of the backup management console API
+     */
     private $apiHost = null;
 
+    /**
+     * @var null|string token given back by the Account Management Console for further use
+     */
     private $apiToken = null;
 
+    /**
+     * @var null|string host of the account management console API
+     */
     private $loginHost = null;
 
+    /**
+     * @var null|string username used for log-in on the account management console
+     */
     private $username = null;
 
+    /**
+     * @var null|string password used for log-in on the account management console
+     */
     private $password = null;
 
     /**
      * Modules_AcronisBackup_webapi_Request constructor.
      *
-     * set up initial connection
+     * Set up initial connection
      *
-     * @param $loginHost
-     * @param $username
-     * @param $password
+     * @param string $loginHost Host of the account management console API
+     * @param string $username  username used for log-in
+     * @param string $password  password used for log-in
      */
     public function __construct($loginHost, $username, $password)
     {
@@ -69,11 +93,11 @@ class Modules_AcronisBackup_webapi_Request
     /**
      * request
      *
-     * passes a request to the api
+     * Passes a request to the api
      *
-     * @param      $method
-     * @param      $endpoint
-     * @param null $data
+     * @param string $method   Method used for the call ("GET" or "POST")
+     * @param string $endpoint endpoint of the API-Call
+     * @param array  $data     Post-data to send with the call
      *
      * @return array
      */
@@ -85,7 +109,7 @@ class Modules_AcronisBackup_webapi_Request
     /**
      * retrieveApiInfo
      *
-     * retrieve information on final api host and token
+     * Retrieve information on final api host and token
      *
      * @return bool
      */
@@ -114,7 +138,7 @@ class Modules_AcronisBackup_webapi_Request
     /**
      * establishConnection
      *
-     * establish connection to final remote api host
+     * Establish connection to final remote api host
      *
      * @return bool
      */
@@ -142,7 +166,7 @@ class Modules_AcronisBackup_webapi_Request
     /**
      * login
      *
-     * performs login on initial server
+     * Performs login on initial server
      *
      * @return bool
      */
@@ -175,10 +199,21 @@ class Modules_AcronisBackup_webapi_Request
         return true;
     }
 
+    /**
+     * call
+     *
+     * Performs an API-Call
+     *
+     * @param string     $method Method used for the API-Call
+     * @param string     $uri    URI of the API-Call
+     * @param array|null $data   Post-Data given to the call
+     *
+     * @return array
+     */
     protected function call($method, $uri, $data = null)
     {
         // Setup the cURL handle.
-        $ch = curl_init();
+        $handle = curl_init();
 
         // Set the request method.
         switch (strtoupper($method)) {
@@ -223,26 +258,26 @@ class Modules_AcronisBackup_webapi_Request
         $host = parse_url($uri)['host'];
 
         // Handle sessions
-        if($this->cookiejars[$host]) {
+        if ($this->cookiejars[$host]) {
             $options[CURLOPT_COOKIEFILE] = $this->cookiejars[$host];
         } else {
             $options[CURLOPT_COOKIEJAR] = $this->cookiejars[$host] = tempnam(sys_get_temp_dir(), "plesk-acronis");
         }
 
         // Set the cURL options.
-        curl_setopt_array($ch, $options);
+        curl_setopt_array($handle, $options);
         // Execute the request and close the connection.
-        $content = curl_exec($ch);
+        $content = curl_exec($handle);
 
         // Check if the content is a string. If it is not, it must be an error.
         if (!is_string($content)) {
-            $message = curl_error($ch);
+            $message = curl_error($handle);
             throw new RuntimeException($message);
         }
         // Get the request information.
-        $info = curl_getinfo($ch);
+        $info = curl_getinfo($handle);
         // Close the connection.
-        curl_close($ch);
+        curl_close($handle);
 
         $response = $this->getResponse($content, $info);
 
@@ -252,10 +287,10 @@ class Modules_AcronisBackup_webapi_Request
     /**
      * getResponse
      *
-     * parses response and creates a nicely formed array
+     * Parses response and creates a nicely formed array
      *
-     * @param $content
-     * @param $info
+     * @param string $content JSON-Content got from the API
+     * @param array  $info    Curl-Info-Object
      *
      * @return array
      */

@@ -46,11 +46,11 @@ class Modules_AcronisBackup_backups_BackupHelper
         $request = new Modules_AcronisBackup_webapi_Request($settings['host'], $settings['username'], $settings['password']);
         $response = $request->request('GET', '/api/ams/backup/plans');
 
-        if ($response['code'] != 200 || !isset ($response['body'])){
+        if ($response['code'] != 200 || !isset($response['body'])) {
             throw new Exception('API returned unexpected response');
         }
 
-        $responseArray = json_decode($response['body'],true);
+        $responseArray = json_decode($response['body'], true);
 
         $planNames = [];
         foreach ($responseArray['data'] as $instance) {
@@ -63,9 +63,10 @@ class Modules_AcronisBackup_backups_BackupHelper
     /**
      * getRecoveryPoints
      *
-     * Description
+     * Gets all recovery points acronis knows for this machine from the server
      *
-     *
+     * @return array|void
+     * @throws Exception
      */
     public static function getRecoveryPoints()
     {
@@ -102,13 +103,16 @@ class Modules_AcronisBackup_backups_BackupHelper
     /**
      * getWebspaceBackup
      *
-     * Description
+     * Downloads the backup file from the Acronis API
      *
-     * @param $itemSliceFile
+     * @param string $itemSliceFile File-Identifyer from Acronis. Needed to get the file from them
+     * @param string $domain        Subscription who wants their Backup
      *
+     * @return string Filename which has to be given to the acronis recovery script
      * @throws Exception
      */
-    public static function getWebspaceBackup($itemSliceFile, $domain) {
+    public static function getWebspaceBackup($itemSliceFile, $domain)
+    {
         if (! isset($itemSliceFile)) {
             throw new Exception('itemSliceFile missing');
         }
@@ -123,7 +127,6 @@ class Modules_AcronisBackup_backups_BackupHelper
         $response = $request->request('POST', '/api/ams/archives/dummy/backups/dummy/items?machineId=' . $machineId . '&backupId=' . urlencode($itemSliceFile) . '&type=files');
         $responseArray = json_decode($response['body'], true);
 
-      //  $domain = pm_Session::getCurrentDomain()->getName();
         $filePath = trim($responseArray["data"][0]["name"]) . "/var/www/vhosts/" . $domain;
 
         $payload = [
@@ -140,9 +143,9 @@ class Modules_AcronisBackup_backups_BackupHelper
         $request2 = new Modules_AcronisBackup_webapi_Request($settings['host'], $settings['username'], $settings['password']);
         $response2 = $request2->request('GET', '/api/ams/archives/downloads/' . $responseArray["SessionID"] . '/dummy?format=ZIP&machineId=' . $machineId . '&fileName=backup.zip&start_download=1');
         $filename = $domain . '.zip';
-        $fh = fopen('/usr/local/psa/var/modules/acronis-backup/tmp/' . $filename, 'w');
-        fwrite($fh, $response2['body']);
-        fclose($fh);
+        $file = fopen('/usr/local/psa/var/modules/acronis-backup/tmp/' . $filename, 'w');
+        fwrite($file, $response2['body']);
+        fclose($file);
         
         return $domain;
     }

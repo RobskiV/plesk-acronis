@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This File is a part of the plesk-acronis extension (https://github.com/StratoAG/plesk-acronis)
  *
@@ -12,8 +11,25 @@
  *
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */
+
+/**
+ * Class Modules_AcronisBackup_settings_SettingsHelper
+ *
+ * Helper managing the settings defined by the administrator
+ *
+ * @category Helper
+ * @author   Vincent Fahrenholz <fahrenholz@strato.de>
+ * @version  Release: 1.0.0
+ */
 class Modules_AcronisBackup_settings_SettingsHelper
 {
+    /**
+     * getAccountSettings
+     *
+     * Gets the account settings defined by the administrator
+     *
+     * @return array
+     */
     public static function getAccountSettings()
     {
         $settings = pm_Settings::get('accountSettings', null);
@@ -31,6 +47,13 @@ class Modules_AcronisBackup_settings_SettingsHelper
         return $settings;
     }
 
+    /**
+     * setAccountSettings
+     *
+     * Sets the account settings defined by the administrator
+     *
+     * @param array $settings Settings-Array
+     */
     public static function setAccountSettings($settings)
     {
         $settings = json_encode($settings);
@@ -38,6 +61,13 @@ class Modules_AcronisBackup_settings_SettingsHelper
         pm_Settings::set('accountSettings', $settings);
     }
 
+    /**
+     * getBackupSettings
+     *
+     * Gets the Backup-Settings defined by the administrator
+     *
+     * @return array
+     */
     public static function getBackupSettings()
     {
         $settings = pm_Settings::get('backupSettings', null);
@@ -54,6 +84,13 @@ class Modules_AcronisBackup_settings_SettingsHelper
         return $settings;
     }
 
+    /**
+     * setBackupSettings
+     *
+     * Sets the backup settings defined by the administrator
+     *
+     * @param array $settings Settings-Array
+     */
     public static function setBackupSettings($settings)
     {
         $settings = json_encode($settings);
@@ -61,33 +98,54 @@ class Modules_AcronisBackup_settings_SettingsHelper
         pm_Settings::set('backupSettings', $settings);
     }
 
+    /**
+     * getMachineId
+     *
+     * Gets the Machine-ID as configured in Acronis
+     *
+     * @return string
+     * @throws Exception
+     */
     public static function getMachineId()
     {
         $machineId = pm_Settings::get('machineId');
 
         if ($machineId == null) {
-            $machineId = self::_retrieveMachineId();
+            $machineId = self::retrieveMachineId();
             self::setMachineId($machineId);
         }
 
         return $machineId;
     }
 
-    public static function setMachineId($machineId)
+    /**
+     * setMachineId
+     *
+     * Sets the machine-ID defined in acronis
+     *
+     * @param string $machineId Machine-ID in the Acronis-Frontend
+     */
+    private static function setMachineId($machineId)
     {
         pm_Settings::set('machineId', $machineId);
     }
 
+    /**
+     * getIpAddresses
+     *
+     * Gets all Ip-Addresses configured for the server via plesk API
+     *
+     * @return array
+     */
     public static function getIpAddresses()
     {
-        $request = <<<APICALL
-<ip>
-  <get/>
-</ip>
-APICALL;
+        $request = "<ip>
+            <get/>
+        </ip>";
 
         $elements = json_encode(pm_ApiRpc::getService()->call($request, 'admin'));
         $elements = json_decode($elements, true);
+
         $elements = $elements['ip']['get']['result']['addresses'];
 
         $ipAddresses = [];
@@ -99,7 +157,15 @@ APICALL;
         return $ipAddresses;
     }
 
-    private static function _retrieveMachineId()
+    /**
+     * retrieveMachineId
+     *
+     * Retrieves the machine-ID from the Acronis-Server via API call
+     *
+     * @return string
+     * @throws Exception
+     */
+    private static function retrieveMachineId()
     {
         $accountSettings = self::getAccountSettings();
 

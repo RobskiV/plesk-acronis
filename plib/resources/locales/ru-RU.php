@@ -7,7 +7,7 @@
  * Date: 11.03.16
  * Time: 16:25
  *
- * Short Info
+ * Locales for russian language
  *
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This File is part of the plesk-acronis extension
  * (https://github.com/StratoAG/plesk-acronis)
@@ -16,8 +15,26 @@
 
 require_once(__DIR__ . '/../subscriptions/SubscriptionHelper.php');
 
+/**
+ * Class Modules_AcronisBackup_databases_DatabaseHelper
+ *
+ * Helper to get informations about databases defined in Plesk
+ *
+ * @category Helper
+ * @author   Vincent Fahrenholz <fahrenholz@strato.de>
+ * @version  Release: 1.0.0
+ */
 class Modules_AcronisBackup_databases_DatabaseHelper
 {
+    /**
+     * getDatabases
+     *
+     * Gets all Databases which the current client can see via the plesk API
+     *
+     * @param null|pm_Client $client
+     *
+     * @return array
+     */
     public static function getDatabases($client = null)
     {
         if ($client === null) {
@@ -26,21 +43,23 @@ class Modules_AcronisBackup_databases_DatabaseHelper
                 return [pm_Session::getCurrentDomain()->getName()];
             }
         }
-        $request = "
-<database>
-   <get-db>
-      <filter>";
+        $request = "<database>
+            <get-db>
+                <filter>";
         $subscriptions = Modules_AcronisBackup_subscriptions_SubscriptionHelper::getSubscriptions($client);
         foreach ($subscriptions as $subscription) {
             $request .= "<webspace-name>" . $subscription . "</webspace-name>";
         }
         $request .= "</filter>
-   </get-db>
-</database>";
+            </get-db>
+        </database>";
+
         $response = pm_ApiRpc::getService()->call($request);
         $json = json_encode($response);
-        $array = json_decode($json,true);
+        $array = json_decode($json, true);
+
         $responseDatabases = [];
+
         foreach ($array["database"]["get-db"]["result"] as $instance) {
             if (! isset($responseDatabases[$instance["filter-id"]])) {
                 $responseDatabases[$instance["filter-id"]] = [];
