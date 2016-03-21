@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    This file is part of the plesk-acronis-extension and is licenced under apache v.2
+    Author: Vincent Fahrenholz <fahrenholz@strato-rz.de>
+-->
 <module>
     <id>acronis-backup</id>
     <name>Acronis Backup Module</name>

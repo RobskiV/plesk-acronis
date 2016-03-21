@@ -8,10 +8,11 @@
  * Date: 3/13/16
  * Time: 2:41 PM
  *
- * Short Info
+ * Creates Meta-XML containing informations about each subscriptions managed by plesk
  *
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */
+
 require_once(__DIR__ . '/../library/subscriptions/SubscriptionHelper.php');
 require_once(__DIR__ . '/../library/databases/DatabaseHelper.php');
 
@@ -27,12 +28,13 @@ fwrite($metadataFile, "<metadata>
   </extension>
   <pleskVersion>$version</pleskVersion>
   <subscriptions>");
-foreach ($subscriptionDbs as $key => $subscriptionDb){
+
+foreach ($subscriptionDbs as $key => $subscriptionDb) {
     fwrite($metadataFile, "
     <subscription>
       <name>" . $key . "</name>
       <databases>");
-    foreach($subscriptionDb as $instance) {
+    foreach ($subscriptionDb as $instance) {
         if (isset($instance)) {
             fwrite($metadataFile, "
         <database>" . $instance . "</database>");
@@ -42,7 +44,9 @@ foreach ($subscriptionDbs as $key => $subscriptionDb){
       </databases>
     </subscription>");
 }
-fwrite($metadataFile,"
+
+fwrite($metadataFile, "
   </subscriptions>
 </metadata>");
+
 fclose($metadataFile);

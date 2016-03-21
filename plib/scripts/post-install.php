@@ -7,11 +7,10 @@
  * Date: 11.03.16
  * Time: 16:25
  *
- * Short Info
+ * Script executed directly after installing the Extension
  *
  * @licence http://www.apache.org/licenses/LICENSE-2.0 Apache Licence v. 2.0
  */
-
 
 if (!file_exists('/usr/local/psa/var/modules/acronis-backup/logs')) {
     mkdir('/usr/local/psa/var/modules/acronis-backup/logs', 0777, true);
