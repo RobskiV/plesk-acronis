@@ -5,6 +5,7 @@ from argparse import ArgumentParser
 from datetime import datetime
 import logging
 import os
+import shutil
 import sys
 import zipfile
 
@@ -49,8 +50,11 @@ def _rename_legacy_subscription(subscription):
 def _restore_workspace(subscription):
     backup_path = _get_backup_path(subscription)
     logging.debug("Restore archive for %s subscription.", subscription)
-    with zipfile.ZipFile(backup_path, "r") as zip:
-        zip.extractall(PLESK_WORKSPACES_ROOT)
+    with zipfile.ZipFile(backup_path, "r") as z:
+        root_path = z.namelist()[0]
+        z.extractall(PLESK_WORKSPACES_ROOT)
+        shutil.move(os.path.join(PLESK_WORKSPACES_ROOT, root_path), PLESK_WORKSPACE_ROOT))
+    logging.debug("Restore of %s subscription completed.", subscription)
 
 
 def main(args):
